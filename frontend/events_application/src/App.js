@@ -16,7 +16,7 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/create-event" element={<NewEvent />} />
           <Route path="/event" element={<EventPage />} />
-          <Route path="/photo" element={<PhotoView/>} />
+          <Route path="/photo" element={<PhotoView />} />
         </Routes>
       </Router>
     </div>

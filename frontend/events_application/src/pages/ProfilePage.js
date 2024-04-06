@@ -6,6 +6,9 @@ import axios from "axios";
 import EventCard from "../components/EventCard";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
+import EventCard from "../components/EventCard";
+import Button from "react-bootstrap/Button";
+import { useNavigate } from "react-router-dom";
 
 function ProfilePage() {
   // this is a place holder for what would be the HostedEvents associated with the logged in user
@@ -14,6 +17,28 @@ function ProfilePage() {
   const { getIdTokenClaims, isLoading, logout } = useAuth0();
   const [userName, setUserName] = useState("");
   const [users, setUsers] = useState([]);
+
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    // Function to fetch events
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch(
+          "https://contract-manager.aquaflare.io/events/"
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setEvents(data);
+      } catch (error) {
+        console.error("Fetching events failed: ", error);
+      }
+    };
+
+    fetchEvents();
+  }, []);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -134,12 +159,9 @@ function ProfilePage() {
             </div>
             <div className="event-list-container">
               <div className="event-list">
-                <EventCard />
-                <EventCard />
-                <EventCard />
-                <EventCard />
-                <EventCard />
-                <EventCard />
+                {events.map((event) => (
+                  <EventCard key={event.id} event={event} />
+                ))}
               </div>
             </div>
           </div>
