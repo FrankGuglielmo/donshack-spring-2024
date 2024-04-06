@@ -1,6 +1,6 @@
 import React from 'react';
 import NavbarMain from '../components/Navbar';
-
+import Footer from '../components/Footer';
 
 function HomePage() {
     return (
@@ -15,6 +15,9 @@ function HomePage() {
                 <p> filter: </p>
                 <p> create event button</p>
             </section>
+            <footer>
+                <Footer/>
+            </footer>
         </main>
     );
 }
