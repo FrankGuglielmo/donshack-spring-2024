@@ -11,10 +11,14 @@ class Event(models.Model):
     date = models.DateTimeField()
     hosted_by = models.ForeignKey(User, related_name='hosted_events', on_delete=models.CASCADE)
     saved_by = models.ManyToManyField(User, related_name='saved_events', blank=True)
+    cover_photo = models.FileField(upload_to='event_covers/', blank=True, null=True)
 
     def __str__(self):
         return self.title
     
+
+def upload_to_event_directory(instance, filename):
+    return f"events/{instance.event.id}/{filename}" # the path needs to be dynamic to upload the media files to the S3 based on what the event actually is
 
 class MediaUpload(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
