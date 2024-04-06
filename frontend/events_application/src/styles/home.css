@@ -37,10 +37,6 @@ html {
     padding-bottom: 2%;
 }
 
-.add-photo-btn {
-    margin-right: end;
-}
-
 .event-list-container {
     padding: 3.5%;
     height: calc(100vh - 40px);
