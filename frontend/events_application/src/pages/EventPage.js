@@ -4,6 +4,7 @@ import Footer from '../components/Footer';
 import Button from 'react-bootstrap/Button';
 import Slideshow from '../components/Slideshow';
 import { FaArrowDown } from 'react-icons/fa';
+import tempLogo from '../imgs/tempLogo.jpeg';
 import "../styles/home.css";
 
 function EventPage() {
@@ -15,6 +16,7 @@ function EventPage() {
 
     // TEST array of images
     const images = [
+        tempLogo,
         'https://via.placeholder.com/250',
         'https://via.placeholder.com/150',
         'https://via.placeholder.com/350',
