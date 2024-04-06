@@ -3,6 +3,9 @@ import Footer from "../components/Footer";
 import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
+import EventCard from "../components/EventCard";
+import Button from "react-bootstrap/Button";
+import { useNavigate } from "react-router-dom";
 
 function ProfilePage() {
   // this is a place holder for what would be the HostedEvents associated with the logged in user
@@ -73,6 +76,12 @@ function ProfilePage() {
     fetchUserProfile();
   }, [getIdTokenClaims, isLoading]);
 
+  let navigate = useNavigate();
+  const routeChange = () => {
+    let path = `/create-event`;
+    navigate(path);
+  };
+
   return (
     <div>
       <header>
@@ -83,7 +92,6 @@ function ProfilePage() {
           <header>
             <h1>Welcome!</h1>
           </header>
-          <a href="http://localhost:3000/">Go Home</a>
           <div
             className="section"
             style={{
@@ -117,26 +125,19 @@ function ProfilePage() {
                 }}
               >
                 {/* TODO: Create new event page and "onclick" action */}
-                <button>Create New Event</button>
+                <Button onClick={routeChange}>Create New Event</Button>
               </div>
             </div>
-            {colors.map((color, index) => (
-              <div
-                className="eventPreview"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  margin: "10px",
-                  marginTop: "0px",
-                  width: "auto",
-                  height: "100px",
-                  background: color,
-                }}
-              >
-                <h3>Event Title : April 2024</h3>
+            <div className="event-list-container">
+              <div className="event-list">
+                <EventCard />
+                <EventCard />
+                <EventCard />
+                <EventCard />
+                <EventCard />
+                <EventCard />
               </div>
-            ))}
+            </div>
           </div>
         </main>
       </div>
