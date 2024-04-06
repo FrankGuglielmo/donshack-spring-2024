@@ -26,6 +26,16 @@ def create_user(request):
         return JsonResponse({'id': user.id, 'name': user.name})  # Send back some info as JSON
     return JsonResponse({'error': 'This endpoint supports only POST requests.'}, status=405)
 
+
+@csrf_exempt
+def get_all_users(request):
+    if request.method == 'GET':
+        users = User.objects.all()
+        users_data = [{"id": user.id, "name": user.name} for user in users]
+        return JsonResponse({"users": users_data}, status=200)
+    else:
+        return JsonResponse({'error': 'This endpoint supports only GET requests.'}, status=405)
+
 # View for creating a new event
 @csrf_exempt
 def create_event(request):
@@ -48,6 +58,26 @@ def create_event(request):
         return JsonResponse({'id': event.id, 'title': event.title, 'hosted_by': event.hosted_by_id}, status=201)
     else:
         return JsonResponse({'error': 'This endpoint supports only POST requests.'}, status=405)
+
+
+@csrf_exempt
+def get_all_events(request):
+    if request.method == 'GET':
+        events = Event.objects.all()
+        events_data = [
+            {
+                "id": event.id,
+                "title": event.title,
+                "description": event.description,
+                "date": event.date,
+                "hosted_by": event.hosted_by_id  # Assuming you want to include the ID of the user who hosts the event
+            }
+            for event in events
+        ]
+        return JsonResponse({"events": events_data}, status=200)
+    else:
+        return JsonResponse({'error': 'This endpoint supports only GET requests.'}, status=405)
+
 
 # View for uploading media to an event
 @csrf_exempt

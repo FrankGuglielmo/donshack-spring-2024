@@ -23,4 +23,6 @@ urlpatterns = [
      path('create_user/', views.create_user, name='create_user'),
     path('create_event/', views.create_event, name='create_event'),
     path('upload_media/<int:event_id>/', views.upload_media, name='upload_media'),
+     path('get_all_users/', views.get_all_users, name='get_all_users'),
+    path('get_all_events/', views.get_all_events, name='get_all_events'),
 ]
