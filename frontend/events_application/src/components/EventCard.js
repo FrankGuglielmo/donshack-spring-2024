@@ -7,7 +7,7 @@ export default function EventCard() {
 
     // navigate to the event page
     const routeChange = () => {
-        navigate('../pages/Event');
+        navigate('/event');
     };
 
     return (
