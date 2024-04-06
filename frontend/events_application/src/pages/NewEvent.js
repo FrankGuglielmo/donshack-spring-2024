@@ -47,6 +47,10 @@ function NewEvent() {
           <label for="lname">Description:</label>
           <br></br>
           <input type="text" id="lname" name="lname"></input>
+          <br></br>
+          <label for="lname">Cover photo upload:</label>
+          <br></br>
+          <input type="text" id="lname" name="lname"></input>
         </form>
       </div>
       <footer>
