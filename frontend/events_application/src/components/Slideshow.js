@@ -27,7 +27,9 @@ export default function Slideshow({ images }) {
                         position: 'absolute',
                         width: '100%',
                         height: '100%',
-                        objectFit: 'cover'
+                        // cover will fill entire container w/ img
+                        // contain with contain the photo with white space
+                        objectFit: 'contain'
                     }}
                 />
             ))}
