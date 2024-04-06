@@ -21,14 +21,12 @@ function EventPage() {
                     <Button variant="primary" className="add-photo-btn" > 
                         Add Your Photos
                     </Button>
-                    <div className="event-list-container">
-                        <div className="event-list">
-                            <EventCard />
-                            <EventCard />
-                            <EventCard />
-                            <EventCard />
-                            <EventCard />
-                            <EventCard />
+                    <div className="photo-grid">
+                        photo fade grid
+                    </div>
+                    <div className="photo-container">
+                        <div className="photo-gallery">
+                            Photo1
                         </div>
                     </div>
                 </section>
