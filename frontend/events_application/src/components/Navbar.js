@@ -9,9 +9,8 @@ export default function NavbarMain() {
     <>
       <Navbar bg="dark" data-bs-theme="dark">
         <Container>
-          <Navbar.Brand href="#" style={{ height: "5%", width: "3%", backgroundColor: "#bbb", borderRadius: "50%" }}>hi</Navbar.Brand>
+          <Navbar.Brand href="#" style={{ height: "5%", width: "3%", backgroundColor: "#bbb", borderRadius: "50%" }}>Lg</Navbar.Brand>
           <Nav className="justify-content-end">
-            {/* <Nav.Link href="#login">Login/Sign Up</Nav.Link> */}
             <Nav.Link>
               {/* If not already authenticated, generate a login button. Otherwise, logout. */}
               {!isAuthenticated ? (
