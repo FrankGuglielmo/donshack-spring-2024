@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
+import EventCard from '../components/EventCard';
 import "../styles/home.css";
 
 function HomePage() {
@@ -21,9 +22,9 @@ function HomePage() {
             <section id="events">
                 <section>
                     <div className='buttons'>
-                        <DropdownButton as={ButtonGroup} title="Dropdown" id="bg-nested-dropdown">
-                            <Dropdown.Item eventKey="1">Dropdown link</Dropdown.Item>
-                            <Dropdown.Item eventKey="2">Dropdown link</Dropdown.Item>
+                        <DropdownButton as={ButtonGroup} title="Filter" id="bg-nested-dropdown">
+                            <Dropdown.Item eventKey="1">Date</Dropdown.Item>
+                            <Dropdown.Item eventKey="2">Location</Dropdown.Item>
                         </DropdownButton>
                         <Button variant="primary" className="create-event-btn">
                             Create New Event
@@ -31,36 +32,12 @@ function HomePage() {
                     </div>
                     <div className="event-list-container">
                         <div className="event-list">
-                            <div className="event-card">
-                                <h3>DONS Hack 2024</h3>
-                                <br/>
-                                <p>04/06/2024 - 04/07/2024</p>
-                            </div>
-                            <div className="event-card">
-                                <h3>DONS Hack 2024</h3>
-                                <br/>
-                                <p>04/06/2024 - 04/07/2024</p>
-                            </div>
-                            <div className="event-card">
-                                <h3>DONS Hack 2024</h3>
-                                <br/>
-                                <p>04/06/2024 - 04/07/2024</p>
-                            </div>
-                            <div className="event-card">
-                                <h3>DONS Hack 2024</h3>
-                                <br/>
-                                <p>04/06/2024 - 04/07/2024</p>
-                            </div>
-                            <div className="event-card">
-                                <h3>DONS Hack 2024</h3>
-                                <br/>
-                                <p>04/06/2024 - 04/07/2024</p>
-                            </div>
-                            <div className="event-card">
-                                <h3>DONS Hack 2024</h3>
-                                <br/>
-                                <p>04/06/2024 - 04/07/2024</p>
-                            </div>
+                            <EventCard/>
+                            <EventCard/>
+                            <EventCard/>
+                            <EventCard/>
+                            <EventCard/>
+                            <EventCard/>
                         </div>
                     </div>
                 </section>
