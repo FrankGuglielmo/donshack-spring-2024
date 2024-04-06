@@ -4,13 +4,18 @@ from django.shortcuts import render
 # Create your views here.
 
 import json
+import boto3
+from django.conf import settings
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.utils import timezone
 from django.contrib.auth.hashers import make_password
 from .models import User, Event, MediaUpload
 from .forms import MediaUploadForm
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.dateparse import parse_datetime
+from io import BytesIO
+
 
 # View for creating a new user
 @csrf_exempt
@@ -83,13 +88,31 @@ def get_all_events(request):
 @csrf_exempt
 def upload_media(request, event_id):
     if request.method == 'POST':
-        print("IN HERE")
         form = MediaUploadForm(request.POST, request.FILES)
         if form.is_valid():
-            media_upload = form.save(commit=False)
-            media_upload.event_id = event_id
-            media_upload.save()
-            return JsonResponse({'message': 'File uploaded successfully', 'event_id': event_id}, status=201)
+            # Ensure the event exists
+            event = get_object_or_404(Event, id=event_id)
+
+            file = request.FILES['upload']
+            file_content = BytesIO(file.read())
+
+            s3_client = boto3.client('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                                     aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+                                     region_name=settings.AWS_S3_REGION_NAME)
+            try:
+                s3_key = f"events/{event_id}/{file.name}"
+                s3_client.upload_fileobj(file_content, settings.AWS_STORAGE_BUCKET_NAME, s3_key)
+
+                # Correctly assign the event to media upload
+                media_upload = form.save(commit=False)
+                media_upload.event = event
+                media_upload.save()
+
+                return JsonResponse({'message': 'File uploaded successfully to S3', 'event_id': event_id}, status=201)
+            except Exception as e:
+                return JsonResponse({'error': str(e)}, status=500)
+            finally:
+                file_content.close()
         else:
             return JsonResponse({'error': 'Invalid form data.'}, status=400)
     else:
