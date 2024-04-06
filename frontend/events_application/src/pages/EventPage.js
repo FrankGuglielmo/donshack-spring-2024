@@ -24,7 +24,7 @@ function EventPage() {
         'https://via.placeholder.com/150',
         'https://via.placeholder.com/250',
         'https://via.placeholder.com/450',
-        'https://via.placeholder.com/250'
+        // 'https://via.placeholder.com/250'
     ];
 
     return (
@@ -47,7 +47,7 @@ function EventPage() {
             </div>
             <section id="event-gallery" ref={eventGalleryRef}>
                 <div className="d-flex justify-content-end">
-                    <Button variant="primary" className="add-photo-btn">
+                    <Button variant="primary" className="add-photo-btn mt-2">
                         Add Your Photos
                     </Button>
                 </div>
