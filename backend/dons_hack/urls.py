@@ -15,14 +15,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from events_application import views
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from events_application.views import UserViewSet, EventViewSet, MediaUploadViewSet
+
+router = DefaultRouter()
+router.register(r'users', UserViewSet)
+router.register(r'events', EventViewSet)
+router.register(r'media_uploads', MediaUploadViewSet, basename='mediaupload')
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-     path('create_user/', views.create_user, name='create_user'),
-    path('create_event/', views.create_event, name='create_event'),
-    path('upload_media/<int:event_id>/', views.upload_media, name='upload_media'),
-     path('get_all_users/', views.get_all_users, name='get_all_users'),
-    path('get_all_events/', views.get_all_events, name='get_all_events'),
+    path('', include(router.urls)),
 ]
