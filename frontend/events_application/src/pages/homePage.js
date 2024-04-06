@@ -15,6 +15,15 @@ function HomePage() {
                 <p> filter: </p>
                 <p> create event button</p>
             </section>
+            <section>
+            <p> LOTs of Stuff </p>
+            </section>
+            <section>
+            <p> LOTs of Stuff </p>
+            </section>
+            <section>
+                <p> LOTs of Stuff </p>
+            </section>
             <footer>
                 <Footer/>
             </footer>

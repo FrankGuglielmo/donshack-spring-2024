@@ -2,12 +2,10 @@ import { Container, Row, Col, Stack, Image, Nav, NavLink } from "react-bootstrap
 
 function Footer() {
     return (
-        <footer>
+        <footer className="footer mt-auto bg-primary text-white">
             <Container fluid>
-                <Row className="bg-primary text-white">
-                    <Col > Column1 </Col>
-                    <Col> Column2 </Col>
-                    <Col> Column3 </Col>
+                <Row>
+                    <Col > Footer </Col>
                 </Row>
             </Container>
         </footer>
