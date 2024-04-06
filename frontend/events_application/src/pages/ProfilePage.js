@@ -1,8 +1,83 @@
+import NavbarMain from "../components/Navbar";
+import Footer from "../components/Footer";
+import React, { useEffect, useState } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+import axios from "axios";
+
 function ProfilePage() {
   // this is a place holder for what would be the HostedEvents associated with the logged in user
   const colors = ["#194b21", "#da4485", "#f0bbf7"];
+
+  const { getIdTokenClaims, isLoading, logout } = useAuth0();
+  const [userName, setUserName] = useState("");
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (!isLoading) {
+        try {
+          const idTokenClaims = await getIdTokenClaims();
+          const email = idTokenClaims?.email || "";
+          setUserName(email);
+          const sub = idTokenClaims?.sub || "";
+
+          // Make a GET request to fetch all users
+          axios
+            .get("https://localhost:8000/users/", {
+              withCredentials: true,
+            })
+            .then((response) => {
+              const allUsers = response.data;
+              setUsers(allUsers);
+
+              // Filter the users to find the user with the desired username
+              const userWithUsername = allUsers.find(
+                (user) => user.name === email
+              );
+
+              if (!userWithUsername) {
+                // User doesn't exist, proceed to create a new user with a POST request
+                console.log("User not found, creating a new user.");
+
+                const newUser = {
+                  name: email,
+                  password: sub,
+                };
+
+                axios
+                  .post("https://localhost:8000/users/", newUser, {
+                    withCredentials: true,
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                  })
+                  .then((postResponse) => {
+                    console.log(
+                      "User created successfully:",
+                      postResponse.data
+                    );
+                  })
+                  .catch((postError) => {
+                    console.error("Error creating user:", postError);
+                  });
+              }
+            })
+            .catch((error) => {
+              console.error("Error fetching users:", error);
+            });
+        } catch (error) {
+          console.error("Error retrieving ID token claims:", error);
+        }
+      }
+    };
+    fetchUserProfile();
+  }, [getIdTokenClaims, isLoading]);
+
   return (
     <div>
+      <header>
+        <NavbarMain />
+      </header>
       <div className="container">
         <main>
           <header>
@@ -65,6 +140,9 @@ function ProfilePage() {
           </div>
         </main>
       </div>
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
 }
