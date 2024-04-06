@@ -3,6 +3,7 @@ import "./App.css";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import Homepage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
+import EventPage from "./pages/EventPage";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/event" element={<EventPage />} />
         </Routes>
       </Router>
     </div>
