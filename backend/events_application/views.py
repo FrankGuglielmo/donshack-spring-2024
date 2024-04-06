@@ -15,6 +15,12 @@ from .forms import MediaUploadForm
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.dateparse import parse_datetime
 from io import BytesIO
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from django.contrib.auth.hashers import make_password
+from .models import User, Event, MediaUpload
+from .serializers import UserSerializer, EventSerializer, MediaUploadSerializer
 
 
 # View for creating a new user
@@ -65,24 +71,13 @@ def create_event(request):
         return JsonResponse({'error': 'This endpoint supports only POST requests.'}, status=405)
 
 
-@csrf_exempt
-def get_all_events(request):
-    if request.method == 'GET':
-        events = Event.objects.all()
-        events_data = [
-            {
-                "id": event.id,
-                "title": event.title,
-                "description": event.description,
-                "date": event.date,
-                "hosted_by": event.hosted_by_id  # Assuming you want to include the ID of the user who hosts the event
-            }
-            for event in events
-        ]
-        return JsonResponse({"events": events_data}, status=200)
-    else:
-        return JsonResponse({'error': 'This endpoint supports only GET requests.'}, status=405)
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
+class EventViewSet(viewsets.ModelViewSet):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
 
 # View for uploading media to an event
 @csrf_exempt

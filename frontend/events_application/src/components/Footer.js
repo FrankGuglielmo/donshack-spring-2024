@@ -1,15 +1,14 @@
 import { Container, Row, Col, Stack, Image, Nav, NavLink } from "react-bootstrap"
 
-function Footer() {
+export default function Footer() {
     return (
-        <footer className="footer mt-auto bg-primary text-white">
+        <footer className="footer bg-primary mt-2 text-white">
             <Container fluid>
                 <Row>
-                    <Col > Footer </Col>
+                    <Col> Footer </Col>
                 </Row>
             </Container>
         </footer>
     );
 }
 
-export default Footer;
