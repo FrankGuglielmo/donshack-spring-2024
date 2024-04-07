@@ -26,6 +26,16 @@ function PhotoView() {
 
     const toggleReportForm = () => setIsReportFormVisible((isVisible) => !isVisible);
 
+    const downloadImage = () => {
+        const imageSrc = images[currentIndex];
+        const link = document.createElement('a');
+        link.href = imageSrc;
+        link.download = `Image-${currentIndex}.jpg`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };    
+
     const routeChange = () => {
         navigate(`/event/${eventId}`, {state: { event } });
     };
@@ -40,7 +50,7 @@ function PhotoView() {
                     </button>
                     <div className="photo-number">{currentIndex + 1} / {images.length}</div>
                     <div className="rightBtns">
-                        <button className="leftBtn" onClick={routeChange}>
+                        <button className="leftBtn" onClick={downloadImage}>
                             <IoMdDownload size={25} />
                         </button>
                         <button id="warnBtn" onClick={toggleReportForm}>
