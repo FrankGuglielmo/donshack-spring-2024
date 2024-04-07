@@ -8,7 +8,7 @@ import NavbarMain from '../components/Navbar';
 import Footer from '../components/Footer';
 import React, { useState, useEffect } from "react";
 
-function FormExample() {
+function CreateEventForm() {
     const schema = yup.object().shape({
         eventTitle: yup.string().required('Event title is required'),
         date: yup.date().required('Date is required'),
@@ -123,4 +123,4 @@ function FormExample() {
     );
 }
 
-export default FormExample;
+export default CreateEventForm;
