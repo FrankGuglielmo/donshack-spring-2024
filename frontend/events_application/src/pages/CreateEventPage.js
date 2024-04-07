@@ -13,8 +13,6 @@ function FormExample() {
         eventTitle: yup.string().required('Event title is required'),
         date: yup.date().required('Date is required'),
         time: yup.string().required('Time is required'),
-        city: yup.string().required('City is required'),
-        state: yup.string().required('State is required'),
         description: yup.string().required('Description is required'),
         file: yup.mixed().required('An image file is required'),
     });
@@ -32,8 +30,6 @@ function FormExample() {
                     eventTitle: '',
                     date: '',
                     time: '',
-                    city: '',
-                    state: '',
                     description: '',
                     file: null,
                 }}
@@ -53,7 +49,8 @@ function FormExample() {
                                 />
                                 <Form.Control.Feedback type="invalid">{errors.eventTitle}</Form.Control.Feedback>
                             </Form.Group>
-
+                        </Row>
+                        <Row>
                             <Form.Group as={Col} controlId="validationFormik02">
                                 <Form.Label className="form-label">Date</Form.Label>
                                 <Form.Control
@@ -78,34 +75,6 @@ function FormExample() {
                                     isInvalid={!!errors.time}
                                 />
                                 <Form.Control.Feedback type="invalid">{errors.time}</Form.Control.Feedback>
-                            </Form.Group>
-                        </Row>
-
-                        <Row className="mb-3">
-                            <Form.Group as={Col} controlId="validationFormik04" className="pt-3">
-                                <Form.Label className="form-label">City</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="city"
-                                    className="form-control"
-                                    value={values.city}
-                                    onChange={handleChange}
-                                    isInvalid={!!errors.city}
-                                />
-                                <Form.Control.Feedback type="invalid">{errors.city}</Form.Control.Feedback>
-                            </Form.Group>
-
-                            <Form.Group as={Col} controlId="validationFormik05" className="pt-3">
-                                <Form.Label className="form-label">State</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="state"
-                                    className="form-control"
-                                    value={values.state}
-                                    onChange={handleChange}
-                                    isInvalid={!!errors.state}
-                                />
-                                <Form.Control.Feedback type="invalid">{errors.state}</Form.Control.Feedback>
                             </Form.Group>
                         </Row>
 
