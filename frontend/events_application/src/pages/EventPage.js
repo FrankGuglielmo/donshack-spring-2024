@@ -140,7 +140,8 @@ function EventPage() {
                 <div className="d-flex justify-content-end">
                     <Button className="add-photo-btn mt-2" style={style}
                         onMouseEnter={() => setHover(true)}
-                        onMouseLeave={() => setHover(false)}>
+                        onMouseLeave={() => setHover(false)}
+                        onClick={openPopup}>
                         Add Your Photos
                     </Button>
                 </div>
