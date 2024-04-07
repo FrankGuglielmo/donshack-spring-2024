@@ -17,7 +17,7 @@ export default function EventCard({ event }) {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        opacity: 0.5,
+        opacity: 0.8,
       }}
     >
       <div className='event-card-content'>
