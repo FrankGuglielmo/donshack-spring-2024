@@ -14,8 +14,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/event" element={<EventPage />} />
-          <Route path="/photo" element={<PhotoView/>} />
+          <Route path="/event/:eventId" element={<EventPage />} />
+          <Route path="/photo/:s3_url" element={<PhotoView/>} />
           <Route path="/createEvent" element={<CreateEventPage/>} />
         </Routes>
       </Router>

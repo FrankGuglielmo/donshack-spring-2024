@@ -5,7 +5,7 @@ export default function EventCard({ event }) {
   const navigate = useNavigate();
 
   const routeChange = () => {
-    navigate(`/event/${event.title}`);
+    navigate(`/event/${event.id}`);
   };
 
   return (
