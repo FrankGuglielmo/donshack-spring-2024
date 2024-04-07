@@ -39,8 +39,6 @@ function ProfilePage() {
                 (user) => user.name === email
               );
 
-              setCurUserID(userWithUsername.id);
-
               if (!userWithUsername) {
                 // User doesn't exist, proceed to create a new user with a POST request
                 console.log("User not found, creating a new user.");
@@ -71,6 +69,8 @@ function ProfilePage() {
                   .catch((postError) => {
                     console.error("Error creating user:", postError);
                   });
+              } else {
+                setCurUserID(userWithUsername.id);
               }
             })
             .catch((error) => {
