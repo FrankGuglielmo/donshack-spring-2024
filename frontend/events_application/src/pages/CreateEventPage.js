@@ -109,7 +109,7 @@ function FormExample() {
                             </Form.Group>
                         </Row>
 
-                        <Form.Group className="mb-3" controlId="validationFormik06" className="pt-3">
+                        <Form.Group className="mb-3 pt-3" controlId="validationFormik06">
                             <Form.Label className="form-label">Description</Form.Label>
                             <Form.Control
                                 as="textarea"
@@ -122,7 +122,7 @@ function FormExample() {
                             <Form.Control.Feedback type="invalid">{errors.description}</Form.Control.Feedback>
                         </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="validationFormik07" className="pt-3">
+                        <Form.Group className="mb-3 pt-3" controlId="validationFormik07">
                             <Form.Label className="form-label">Image File</Form.Label>
                             <Form.Control
                                 type="file"

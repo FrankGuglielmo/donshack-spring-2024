@@ -57,9 +57,6 @@ function HomePage() {
                 <section>
                     <div className='buttons'>
                         <Button variant="primary" className="create-event-btn" onClick={routeChange}>
-                            Scroll To Current Month
-                        </Button>
-                        <Button variant="primary" className="create-event-btn" onClick={routeChange}>
                             Create New Event
                         </Button>
                     </div>

@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 
 function ReportPhoto({ onClose }) {
     const [radioValue, setRadioValue] = useState('1');
+    const [isSubmitted, setIsSubmitted] = useState(false);
 
     const radios = [
         { name: "I just don't like it.", value: '1' },
@@ -15,36 +16,35 @@ function ReportPhoto({ onClose }) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log('sent request');
-        // Here you would handle the submission, e.g., sending data to the server
-
-        // After handling submission, close the form
-        onClose();
+        setIsSubmitted(true);
     };
 
     return (
         <Form onSubmit={handleSubmit} className="report-photo-container">
-            <div className="header">
+            <div className="header mb-3">
                 <Form.Label>Why are you reporting this photo?</Form.Label>
                 <IoMdClose className="close-button" size={25} onClick={onClose} />
             </div>
-            <div className="custom-radio-button">
-                {radios.map((radio, idx) => (
-                    <ToggleButton
-                        key={idx}
-                        id={`radio-${idx}`}
-                        type="radio"
-                        variant="outline-primary"
-                        name="radio"
-                        value={radio.value}
-                        checked={radioValue === radio.value}
-                        onChange={(e) => setRadioValue(e.currentTarget.value)}
-                    >
-                        {radio.name}
-                    </ToggleButton>
-                ))}
+            <div className="report-form">
+                <div className="custom-radio-button">
+                    {radios.map((radio, idx) => (
+                        <ToggleButton
+                            key={idx}
+                            id={`radio-${idx}`}
+                            type="radio"
+                            variant="outline-primary"
+                            name="radio"
+                            value={radio.value}
+                            checked={radioValue === radio.value}
+                            onChange={(e) => setRadioValue(e.currentTarget.value)}
+                        >
+                            {radio.name}
+                        </ToggleButton>
+                    ))}
+                </div>
             </div>
-            <div className="d-flex justify-content-end">
+            {isSubmitted && <div className="text-success mt-2">Your report has been submitted and is under review by our team.</div>}
+            <div className="d-flex justify-content-end mt-3">
                 <Button type="submit">Submit</Button>
             </div>
         </Form>
