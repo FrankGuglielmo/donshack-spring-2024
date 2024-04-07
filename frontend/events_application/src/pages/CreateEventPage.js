@@ -10,6 +10,7 @@ import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
+// import AWS from "aws-sdk"; // Import AWS SDK
 
 function FormExample() {
   const {
@@ -73,24 +74,61 @@ function FormExample() {
     fetchUserProfile();
   }, [getIdTokenClaims, isLoading]);
 
-  const saveEvent = (values) => {
-    const newEvent = {
-      title: values.eventTitle,
-      description: values.description,
-      date: values.date,
-      cover_photo: values.file,
-      hosted_by: curUserID,
-    };
+  const saveEvent = async (values) => {
+    try {
+      // Upload file to S3
+      //   const s3 = new AWS.S3({
+      //     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      //     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      //   });
 
-    console.log(newEvent);
-    //Update DB
-    //1. Send file to S3? Get URL from S3? Then, build event object with cover_photo: s3.url
-    //2. Post event object
-    //3. Editing events?
-    //4. Deleting events?
+      //   const params = {
+      //     Bucket: "your-bucket-name",
+      //     Key: values.file.name, // Use file name as key
+      //     Body: values.file,
+      //   };
 
-    //Reroute to profile page
-    routeChange();
+      //   const uploadResponse = await s3.upload(params).promise();
+      //   const s3Url = uploadResponse.Location;
+
+      const newEvent = {
+        title: values.eventTitle,
+        description: values.description,
+        date: values.date,
+        cover_photo: values.file,
+        hosted_by: curUserID,
+        saved_by: [],
+      };
+
+      console.log(newEvent);
+      //Update DB
+      //1. Send file to S3? Get URL from S3? Then, build event object with cover_photo: s3.url
+
+      axios
+        .post("https://contract-manager.aquaflare.io/events/", {
+          title: values.eventTitle,
+          description: values.description,
+          date: values.date,
+          cover_photo: values.file,
+          hosted_by: curUserID,
+          saved_by: [],
+        })
+        .then(() => {
+          console.log("Saved successfully!");
+        })
+        .catch((error) => {
+          console.error("Error saving event info:", error);
+          console.log("Server Response:", error.response.data);
+        });
+      //2. Post event object
+      //3. Editing events?
+      //4. Deleting events?
+
+      //Reroute to profile page
+      routeChange();
+    } catch (error) {
+      console.error("Error uploading file or saving event:", error);
+    }
   };
 
   return (
