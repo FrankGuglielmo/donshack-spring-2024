@@ -30,11 +30,11 @@ function PhotoView() {
         const imageSrc = images[currentIndex];
         const link = document.createElement('a');
         link.href = imageSrc;
-        link.setAttribute('download', `Image-${currentIndex}.jpg`);
+        link.download = `Image-${currentIndex}.jpg`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-    };
+    };    
 
     const routeChange = () => {
         navigate(`/event/${eventId}`);
