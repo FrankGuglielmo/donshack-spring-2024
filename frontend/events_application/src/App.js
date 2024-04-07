@@ -8,10 +8,13 @@ import EventPage from "./pages/EventPage";
 import PhotoView from "./pages/PhotoView";
 import CreateEventPage from "./pages/CreateEventPage";
 
+import { Analytics } from "@vercel/analytics/react"
+
 function App() {
   return (
     <div className="App">
       <Router basename="/">
+        <Analytics />
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/profile" element={<ProfilePage />} />
