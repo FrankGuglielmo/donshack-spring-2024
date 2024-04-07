@@ -19,11 +19,12 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from events_application.views import UserViewSet, EventViewSet, MediaUploadViewSet
 
+# using viewsets we use the default router to inherit all of the endpoints for the api
 router = DefaultRouter()
-router.register(r'users', UserViewSet)
-router.register(r'events', EventViewSet)
-router.register(r'media_uploads', MediaUploadViewSet, basename='mediaupload')
+router.register(r'users', UserViewSet) #    /users/
+router.register(r'events', EventViewSet) #  /events/
+router.register(r'media_uploads', MediaUploadViewSet, basename='mediaupload') # /media_uploads/
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('', include(router.urls)), # put include all of the routes
 ]

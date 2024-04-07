@@ -5,6 +5,7 @@ import Homepage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
 import EventPage from "./pages/EventPage";
 import PhotoView from "./pages/PhotoView";
+import CreateEventPage from "./pages/CreateEventPage";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/event/:eventId" element={<EventPage />} />
           <Route path="/photo/:s3_url" element={<PhotoView/>} />
+          <Route path="/createEvent" element={<CreateEventPage/>} />
         </Routes>
       </Router>
     </div>
