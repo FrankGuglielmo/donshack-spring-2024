@@ -38,7 +38,7 @@ function EventPage() {
     const fetchEventData = async () => {
       try {
         const response = await fetch(
-          `https://your-api-endpoint/events/${eventId}`
+          `https://contract-manager.aquaflare.io/events/${eventId}`
         );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
