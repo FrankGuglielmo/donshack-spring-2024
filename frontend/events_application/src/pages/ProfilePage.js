@@ -6,9 +6,6 @@ import axios from "axios";
 import EventCard from "../components/EventCard";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
-import EventCard from "../components/EventCard";
-import Button from "react-bootstrap/Button";
-import { useNavigate } from "react-router-dom";
 
 function ProfilePage() {
   // this is a place holder for what would be the HostedEvents associated with the logged in user
