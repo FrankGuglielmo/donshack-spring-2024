@@ -83,7 +83,7 @@ html {
 .buttons {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: end;
     padding-bottom: 2%;
 }
 
@@ -295,17 +295,24 @@ button h3 {
     cursor: pointer;
 }
 
+.report-form {
+    background-color: #f8f9fa;
+    padding: 0.5%;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+
+}
+
 .custom-radio-button {
     margin: 2%;
+    width: 75%;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    background-color: #f8f9fa;
-    color: #626262;
     border-color: #007bff;
     padding: 10px;
-    text-align: left;
-    border-radius: 5px;
+    border-radius: 10px;
     transition: background-color 0.3s, color 0.3s;
 }
 

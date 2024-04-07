@@ -61,13 +61,6 @@ function HomePage() {
             <Button
               variant="primary"
               className="create-event-btn"
-              onClick={routeChange}
-            >
-              Scroll To Current Month
-            </Button>
-            <Button
-              variant="primary"
-              className="create-event-btn"
               onClick={isAuthenticated ? routeChange : loginWithRedirect}
             >
               Create New Event
