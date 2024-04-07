@@ -117,6 +117,37 @@ class MediaUploadViewSet(viewsets.ModelViewSet):
         finally:
             file_content.close()
 
+    @action(detail=True, methods=['delete'], url_path='delete-from-event')
+    def delete_specific_media_upload(self, request, pk=None):
+        """
+        Delete a specific media upload.
+        """
+        # Retrieve the specific media upload by its ID
+        media_upload = get_object_or_404(MediaUpload, pk=pk)
+        event_id = media_upload.event.id  # Store event ID for the response
+
+        # Initialize the S3 client
+        s3_client = boto3.client('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+                                region_name=settings.AWS_S3_REGION_NAME)
+        
+        # Extract the bucket name and the S3 key from the media upload's file path
+        bucket_name = settings.AWS_STORAGE_BUCKET_NAME
+        object_key = str(media_upload.upload)  # Ensure this is the correct S3 key
+
+        try:
+            # Attempt to delete the file from S3
+            s3_client.delete_object(Bucket=bucket_name, Key=object_key)
+            logger.info(f"Successfully deleted {object_key} from S3 bucket {bucket_name}")
+        except Exception as e:
+            logger.error(f"Failed to delete {object_key} from S3 bucket {bucket_name}: {e}")
+            return Response({'error': f"Failed to delete the file from S3: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        # Delete the media upload from the database
+        media_upload.delete()
+
+        return Response({'message': 'Media upload deleted successfully.', 'event_id': event_id}, status=status.HTTP_204_NO_CONTENT)
+
     # define the destroy method for the ViewSet to actually be able to delete 
     def destroy(self, request, *args, **kwargs):
         media_upload = self.get_object()

@@ -27,7 +27,7 @@ class MediaUploadSerializer(serializers.ModelSerializer):
 
     class Meta:     # create the Meta class to actually get the fields of the MediaUpload view that we want to care about
         model = MediaUpload
-        fields = ['upload', 'event', 's3_url']
+        fields = ['id', 'upload', 'event', 's3_url']
 
     def get_s3_url(self, obj): # once uploaded we need to get the S3 url to actually serve the file to frontend using an href
         if obj.upload:
