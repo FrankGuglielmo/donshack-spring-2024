@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { IoMdClose } from "react-icons/io";
 import { IoMdDownload } from "react-icons/io";
 import { IoIosWarning } from "react-icons/io";
@@ -11,15 +11,23 @@ import "../styles/home.css";
 function PhotoView() {
     const navigate = useNavigate();
     const location = useLocation();
-    const { images, selectedIndex } = location.state;
-    const [currentIndex, setCurrentIndex] = useState(selectedIndex || 0);
+    const { images, selectedIndex, eventId } = location.state;
+    const [currentIndex, setCurrentIndex] = useState(parseInt(selectedIndex, 10) || 0);
     const [isReportFormVisible, setIsReportFormVisible] = useState(false);
 
-    const goToPhoto = (step) => setCurrentIndex((prevIndex) => (prevIndex + step + images.length) % images.length);
+    useEffect(() => {
+        setCurrentIndex(parseInt(selectedIndex, 10) || 0);
+    }, [selectedIndex]);
+
+    const goToPhoto = (step) => {
+        const nextIndex = (currentIndex + step + images.length) % images.length;
+        navigate(`/photo/${nextIndex}?eventId=${eventId}`, { state: { images, selectedIndex: nextIndex, eventId } });
+    };
+
     const toggleReportForm = () => setIsReportFormVisible((isVisible) => !isVisible);
 
     const routeChange = () => {
-        navigate('/event');
+        navigate(`/event/${eventId}`);
     };
 
     return (
