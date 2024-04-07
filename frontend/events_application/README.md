@@ -1,70 +1,58 @@
-# Getting Started with Create React App
+# Clixz - Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Table of Contents
+1. [Introduction](#introduction)
+1. [Navigating Files](#navigating-files)
+3. [Installing Dependencies](#installing-dependencies)
+4. [Running Frontend](#running-frontend)
+5. [Viewing](#viewing)
+6. [Deploying](#deploying)
+7. [Conclusion](#conclusion)
 
-## Available Scripts
+## Introduction
+Clixz is full-stack web application, completed for the DONS Hackathon 2024. It is a photo sharing application that allows users to get connected with community events and share their experiences with other's through photos. Clixz frontend is just one of the many ways our team was able to provide this experience for our community.
+<br><br>
+This documentation provides an overview of the Clixz frontend repository and application, explaining the process of how to start up and run the Clixz's frontend. 
 
-In the project directory, you can run:
+## Navigating Files
+Before starting up the application, we must first make sure we are in the correct folder.
+<br><br>
+First cd into the frontend by running
 
-### `npm start`
+`cd frontend`
 
-Runs the app in the development mode.\
+AND
+
+`cd events_application`
+
+## Installing Dependencies
+Clixz is a React application that utilizes many libraries in order to create its user interactivity. Therefore there are a list of dependencies that it requires.
+
+Before you begin, ensure you have installed the required dependencies:
+
+In your terminal run the following command:
+
+`npm i`
+
+## Running Frontend
+
+In order to start up this React application, run the following command in your terminal:
+
+ `npm start`
+
+## Viewing:
+Once the application has successfully compiled, the application will automatically open in your browser
+
+OR
+
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
+## Conclusion
+This documentation should help you understand the process of how to start up and run the Clixz frontend 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Contributors
+Frank Guglielmo <br>
+Maleke Hanson <br>
+Clare Wilson <br>
+Lidia Perzyna

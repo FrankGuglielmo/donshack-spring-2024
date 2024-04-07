@@ -6,7 +6,6 @@ import ProfilePage from "./pages/ProfilePage";
 import EventPage from "./pages/EventPage";
 import PhotoView from "./pages/PhotoView";
 import CreateEventPage from "./pages/CreateEventPage";
-
 import { Analytics } from "@vercel/analytics/react"
 
 function App() {
