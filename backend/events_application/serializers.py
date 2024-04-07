@@ -23,6 +23,13 @@ class EventSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class MediaUploadSerializer(serializers.ModelSerializer):
+    s3_url = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = MediaUpload
-        fields = '__all__'
+        fields = ['upload', 'event', 's3_url']
+
+    def get_s3_url(self, obj):
+        if obj.upload:
+            return obj.upload.url
+        return None
