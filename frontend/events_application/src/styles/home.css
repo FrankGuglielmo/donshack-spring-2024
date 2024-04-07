@@ -235,3 +235,9 @@ button h3 {
     max-height: 80vh;
     object-fit: contain;
 }
+
+.photo-number {
+    text-align: center;
+    color: white;
+    margin-top: 10px;
+}

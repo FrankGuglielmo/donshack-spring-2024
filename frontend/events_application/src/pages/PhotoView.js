@@ -18,11 +18,11 @@ function PhotoView() {
     };
 
     const goToNextPhoto = () => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+        setCurrentIndex((prevIndex) => (prevIndex - 1) % images.length);
     };
 
     const goToPreviousPhoto = () => {
-        setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+        setCurrentIndex((prevIndex) => (prevIndex + 1 + images.length) % images.length);
     };
 
     return (
@@ -33,6 +33,9 @@ function PhotoView() {
                         <IoMdClose size={25} />
                         <h3>close</h3>
                     </button>
+                    <div className="photo-number">
+                        {currentIndex + 1} / {images.length}
+                    </div>
                     <div className="rightBtns">
                         <button className="leftBtn" onClick={routeChange}>
                             <IoMdDownload size={25} />
