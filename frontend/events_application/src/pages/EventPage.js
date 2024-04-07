@@ -9,17 +9,26 @@ import "../styles/home.css";
 import axios from "axios";
 
 function EventPage() {
-    const [eventMedia, setEventMedia] = useState([]);
-    const eventGalleryRef = useRef(null);
-    const navigate = useNavigate();
-    const { eventId } = useParams(); // Corrected import from react-router-dom
-    const location = useLocation();
-    const { event } = location.state || {}; // Retrieve event details or set to empty object if undefined
-    const [hover, setHover] = useState(false);
+  // event media state initialized, will eventually be loaded up with event photos
+  const [eventMedia, setEventMedia] = useState([]);
+  // state of photo gallery per event for smooth scrolling
+  const eventGalleryRef = useRef(null);
+  // used in order to grab correct url for events/photos from db
+  const navigate = useNavigate();
+  // set param, eventId to navigate each event and keep state
+  const { eventId } = useParams();
+  // maintains objects used within the previous state
+  const location = useLocation();
+  // retrieve event details or set to empty object if undefined
+  const { event } = location.state || {};
+  // css hover state
+  const [hover, setHover] = useState(false);
 
   useEffect(() => {
+    // function that fetches for all photos for specified event ID and updates state
     const fetchEventMedia = async () => {
       try {
+        // fetching from API root
         const response = await fetch(
           `https://contract-manager.aquaflare.io/events/${eventId}/media-uploads`
         );
@@ -28,6 +37,7 @@ function EventPage() {
         }
 
         const data = await response.json();
+        // map through data retrieved and update state 
         const mediaUrls = data.map((media) => media.s3_url);
         setEventMedia(mediaUrls);
       } catch (error) {
@@ -35,8 +45,10 @@ function EventPage() {
       }
     };
 
+    // function to fetch all specific event metadata
     const fetchEventData = async () => {
       try {
+        // fetching specific event
         const response = await fetch(
           `https://contract-manager.aquaflare.io/events/${eventId}`
         );
@@ -44,7 +56,6 @@ function EventPage() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const eventData = await response.json();
-        // Update your state with the fetched event data
       } catch (error) {
         console.error("Failed to fetch event data", error);
       }
@@ -55,34 +66,41 @@ function EventPage() {
     }
   }, [eventId, event]);
 
+  // function to bring user to photo route for PhotoView.js file
   const handlePhotoClick = (selectedIndex) => {
-    const selectedMediaUrl = eventMedia[selectedIndex]; // already a URL string
+    const selectedMediaUrl = eventMedia[selectedIndex];
+    // navigates url of specified
     navigate(
       `/photo/${encodeURIComponent(selectedMediaUrl)}?eventId=${eventId}`,
       { state: { images: eventMedia, selectedIndex, eventId, event } }
     );
   };
 
-    const style = {
-        backgroundColor: hover ? '#C75222' : '#EF8356',
-        border: '1px solid #FF6B2D',
-        cursor: 'pointer',
-    };
-  
+  // style function for buttons
+  const style = {
+    backgroundColor: hover ? '#C75222' : '#EF8356',
+    border: '1px solid #FF6B2D',
+    cursor: 'pointer',
+  };
+
+  // smooth scrolling functionality
   const scrollToGallery = () => {
     eventGalleryRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  // function for uploading photo to an event and posting it to the backend
   const handleFileSelect = async (file) => {
     console.log("Selected file:", file);
     console.log("eventid:", eventId);
     try {
+      // formating data for push
       const formData = new FormData();
       formData.append("upload", file);
       formData.append("event", eventId);
 
       console.log(formData);
 
+      // posting data to db url
       await axios
         .post(
           `https://contract-manager.aquaflare.io/media_uploads/`,
@@ -96,7 +114,8 @@ function EventPage() {
         .then((response) => {
           console.log("Uploaded successfully!");
           const uploadedPhotoUrl = response.data.s3_url;
-          setEventMedia([...eventMedia, uploadedPhotoUrl]); // Add the new photo URL to the eventMedia state to render dynamically on page
+          // adding new photo URL to the eventMedia state to render dynamically on page
+          setEventMedia([...eventMedia, uploadedPhotoUrl]);
         })
         .catch((error) => {
           console.error("Error uploading photo:", error);
@@ -107,6 +126,7 @@ function EventPage() {
     }
   };
 
+  // functionality to open pop up when user requests to upload an image
   const openPopup = () => {
     const isConfirmed = window.confirm("Upload an image?");
     if (isConfirmed) {
@@ -118,51 +138,56 @@ function EventPage() {
     }
   };
 
-    return (
-        <main>
-            <header>
-                <NavbarMain />
-            </header>
-            <div className="photo-grid-display">
-                <Slideshow images={eventMedia} />
-                <div className="overlay">
-                    <section id="event-blurb" style={{color: 'white'}}>
-                        <h2>{event.title}</h2>
-                        <br />
-                        <p style={{color: 'white'}}> {event.description}</p>
-                    </section>
-                    <button className="scroll-down-btn" onClick={scrollToGallery}>
-                        <FaArrowDown size={25} />
-                    </button>
-                </div>
-            </div>
-            <section id="event-gallery" ref={eventGalleryRef}>
-                <div className="d-flex justify-content-end">
-                    <Button className="add-photo-btn mt-2" style={style}
-                        onMouseEnter={() => setHover(true)}
-                        onMouseLeave={() => setHover(false)}
-                        onClick={openPopup}>
-                        Add Your Photos
-                    </Button>
-                </div>
-                <div className="photo-container">
-                    <div className="photo-gallery">
-                        {eventMedia.length > 0 ? (
-                            eventMedia.map((upload, index) => (
-                                <button className="photo" key={index} onClick={() => handlePhotoClick(index)}>
-                                    <img src={upload} alt={`Event Photo ${index + 1}`} />
-                                </button>
-                            ))
-                        ) : (
-                            <h3 id="noImg">There are no current photos for this event.</h3>
-                        )}
-                    </div>
-                </div>
-            </section>
-            <footer>
-                <Footer />
-            </footer>
-        </main>
+  return (
+    <main>
+      <header>
+        <NavbarMain />
+      </header>
+      <div className="photo-grid-display">
+        {/* slide show component call with fetched display title and description */}
+        <Slideshow images={eventMedia} />
+        <div className="overlay">
+          <section id="event-blurb" style={{ color: 'white' }}>
+            <h2>{event.title}</h2>
+            <br />
+            <p style={{ color: 'white' }}> {event.description}</p>
+          </section>
+          {/* button to scroll down to photo gallery */}
+          <button className="scroll-down-btn" onClick={scrollToGallery}>
+            <FaArrowDown size={25} />
+          </button>
+        </div>
+      </div>
+      {/* photo gallery */}
+      <section id="event-gallery" ref={eventGalleryRef}>
+        <div className="d-flex justify-content-end">
+          {/* adding photo button */}
+          <Button className="add-photo-btn mt-2" style={style}
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
+            onClick={openPopup}>
+            Add Your Photos
+          </Button>
+        </div>
+        <div className="photo-container">
+          <div className="photo-gallery">
+            {/* mapping through media to display all photos from specified event */}
+            {eventMedia.length > 0 ? (
+              eventMedia.map((upload, index) => (
+                <button className="photo" key={index} onClick={() => handlePhotoClick(index)}>
+                  <img src={upload} alt={`Event Photo ${index + 1}`} />
+                </button>
+              ))
+            ) : (
+              <h3 id="noImg">There are no current photos for this event.</h3>
+            )}
+          </div>
+        </div>
+      </section>
+      <footer>
+        <Footer />
+      </footer>
+    </main>
   );
 }
 

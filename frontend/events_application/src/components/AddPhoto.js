@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import { ButtonGroup, ToggleButton } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 
+// adding photo functionality 
 function AddPhoto({ onClose }) {
     const [radioValue, setRadioValue] = useState('1');
     const [isSubmitted, setIsSubmitted] = useState(false);

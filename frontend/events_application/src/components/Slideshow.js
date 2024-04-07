@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 // Slideshow functionality for images on event pages
+// images object is passed to frontend
 export default function Slideshow({ images }) {
     // using set state for current img
     const [index, setIndex] = useState(0);
@@ -16,7 +17,7 @@ export default function Slideshow({ images }) {
 
     return (
         <div className="slideshow">
-            
+            {/* mapping through images array */}
             {images.map((image, i) => (
                 <img
                     key={i}
