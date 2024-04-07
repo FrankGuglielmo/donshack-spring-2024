@@ -29,14 +29,16 @@ function FormExample() {
     navigate(`/profile`);
   };
   const schema = yup.object().shape({
-    eventTitle: yup.string().required("Event title is required"),
-    date: yup.date().required("Date is required"),
-    time: yup.string().required("Time is required"),
-    city: yup.string().required("City is required"),
-    state: yup.string().required("State is required"),
-    description: yup.string().required("Description is required"),
-    file: yup.mixed().required("An image file is required"),
-  });
+        eventTitle: yup.string().required('Event title is required'),
+        date: yup.date().required('Date is required'),
+        time: yup.string().required('Time is required'),
+        description: yup.string().required('Description is required'),
+        file: yup.mixed().required('An image file is required').test("fileType", "Unsupported File Format", value => {
+            if (!value) return true; // bypassing validation if no file selected
+            const supportedFormats = ['image/jpg', 'image/jpeg', 'image/png'];
+            return supportedFormats.includes(value.type);
+        }),
+    });
 
   useEffect(() => {
     const fetchUserProfile = async () => {
