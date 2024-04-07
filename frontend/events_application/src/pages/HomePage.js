@@ -13,17 +13,7 @@ import "../styles/home.css";
 function HomePage() {
 
     const navigate = useNavigate();
-    const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
-
-    // navigate to the event page
-    const routeChange = () => {
-        if (isAuthenticated) {
-            navigate('/createEvent');
-        } else {
-            alert('You must be signed in to create an event.');
-        }
-    };
-  
+    const { loginWithRedirect, logout, isAuthenticated } = useAuth0();  
     const [events, setEvents] = useState([]);
 
     useEffect(() => {
@@ -44,6 +34,10 @@ function HomePage() {
         fetchEvents();
     }, []);
 
+      const routeChange = () => {
+    navigate(`/create-event`);
+  };
+
     return (
         <main>
             <header>
@@ -59,7 +53,7 @@ function HomePage() {
                         <Button variant="primary" className="create-event-btn" onClick={routeChange}>
                             Scroll To Current Month
                         </Button>
-                        <Button variant="primary" className="create-event-btn" onClick={routeChange}>
+                        <Button variant="primary" className="create-event-btn" onClick={isAuthenticated ? routeChange : loginWithRedirect}>
                             Create New Event
                         </Button>
                     </div>
