@@ -14,6 +14,7 @@ function EventPage() {
     const { eventId } = useParams(); // Corrected import from react-router-dom
     const location = useLocation();
     const { event } = location.state || {}; // Retrieve event details or set to empty object if undefined
+    const [hover, setHover] = useState(false);
 
     useEffect(() => {
         const fetchEventMedia = async () => {
@@ -59,6 +60,12 @@ function EventPage() {
         eventGalleryRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
+    const style = {
+        backgroundColor: hover ? '#C75222' : '#EF8356',
+        border: '1px solid #FF6B2D',
+        cursor: 'pointer',
+    };
+
     return (
         <main>
             <header>
@@ -67,10 +74,10 @@ function EventPage() {
             <div className="photo-grid-display">
                 <Slideshow images={eventMedia} />
                 <div className="overlay">
-                    <section id="event-blurb">
+                    <section id="event-blurb" style={{color: 'white'}}>
                         <h2>{event.title}</h2>
                         <br />
-                        <p>{event.description}</p>
+                        <p style={{color: 'white'}}> {event.description}</p>
                     </section>
                     <button className="scroll-down-btn" onClick={scrollToGallery}>
                         <FaArrowDown size={25} />
@@ -79,7 +86,11 @@ function EventPage() {
             </div>
             <section id="event-gallery" ref={eventGalleryRef}>
                 <div className="d-flex justify-content-end">
-                    <Button variant="primary" className="add-photo-btn mt-2">Add Your Photos</Button>
+                    <Button className="add-photo-btn mt-2" style={style}
+                        onMouseEnter={() => setHover(true)}
+                        onMouseLeave={() => setHover(false)}>
+                        Add Your Photos
+                    </Button>
                 </div>
                 <div className="photo-container">
                     <div className="photo-gallery">

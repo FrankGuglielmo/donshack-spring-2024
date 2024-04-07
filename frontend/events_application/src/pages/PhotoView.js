@@ -26,13 +26,12 @@ function PhotoView() {
 
     const toggleReportForm = () => setIsReportFormVisible((isVisible) => !isVisible);
     
+    // functionality to download photos
     const downloadImage = () => {
-        const imageSrc = images[currentIndex]; // Ensure this is the direct URL to the S3 file
-    
-        // Optionally, if you want to force the download using JavaScript:
+        const imageSrc = images[currentIndex];
         const link = document.createElement('a');
         link.href = imageSrc;
-        link.setAttribute('download', true); // This line is optional and can be omitted if 'Content-Disposition' is set on S3
+        link.setAttribute('download', true);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -45,10 +44,10 @@ function PhotoView() {
 
     return (
         <main id="photo">
-            <div className="photo-bg">
-                <div className="btnGroup">
+            <div className="photo-bg" style={{color:'white'}}>
+                <div className="btnGroup"> 
                     <button className="rightBtn" onClick={routeChange}>
-                        <IoMdClose size={25} />
+                        <IoMdClose size={25}/>
                         <h3>close</h3>
                     </button>
                     <div className="photo-number">{currentIndex + 1} / {images.length}</div>
