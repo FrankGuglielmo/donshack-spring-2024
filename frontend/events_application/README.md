@@ -9,8 +9,6 @@
 6. [Deploying](#deploying)
 7. [Conclusion](#conclusion)
 
-## Introduction
-Clixz is full-stack web application, completed for the DONS Hackathon 2024. It is a photo sharing application that allows users to get connected with community events and share their experiences with other's through photos. Clixz frontend is just one of the many ways our team was able to provide this experience for our community and better yet, it's available for you to use at this very moment just click this link and clix away --> https://clixz.org/
 
 <br><br>
 This documentation provides an overview of the Clixz frontend repository and application, explaining the process of how to start up and run the Clixz's frontend. 
