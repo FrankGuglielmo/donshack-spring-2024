@@ -1,21 +1,29 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function EventCard() {
-    // navigation hooke
-    const navigate = useNavigate(); 
+export default function EventCard({ event }) {
+  const navigate = useNavigate();
 
-    // navigate to the event page
-    const routeChange = () => {
-        navigate('/event');
-    };
+  const routeChange = () => {
+    navigate(`/event/${event.title}`);
+  };
 
-    return (
-        <div>
-            <button className="event-card" onClick={routeChange}>
-                <h3>DONS Hack 2024</h3>
-                <p>04/06/2024 - 04/07/2024</p>
-            </button>
-        </div>
-    );
+  return (
+    <div
+      className='event-card'
+      onClick={routeChange}
+      style={{
+        backgroundImage: `url(${event.cover_photo})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        opacity: 0.5,
+      }}
+    >
+      <div className='event-card-content'>
+        <h3>{event.title}</h3>
+        <p>{new Date(event.date).toDateString()}</p>
+      </div>
+    </div>
+  );
 }
