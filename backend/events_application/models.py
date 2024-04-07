@@ -22,7 +22,7 @@ def upload_to_event_directory(instance, filename):
 
 class MediaUpload(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
-    upload = models.FileField(upload_to='events/')
+    upload = models.FileField(upload_to=upload_to_event_directory) # call the dynmamic path
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
