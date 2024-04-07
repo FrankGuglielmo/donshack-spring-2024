@@ -6,9 +6,23 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 import EventCard from '../components/EventCard';
+import { useNavigate } from 'react-router-dom';
+import { useAuth0 } from "@auth0/auth0-react";
 import "../styles/home.css";
 
 function HomePage() {
+
+    const navigate = useNavigate();
+    const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
+
+    // navigate to the event page
+    const routeChange = () => {
+        if (isAuthenticated) {
+            navigate('/createEvent');
+        } else {
+            alert('You must be signed in to create an event.');
+        }
+    };
 
     return (
         <main>
@@ -26,18 +40,18 @@ function HomePage() {
                             <Dropdown.Item eventKey="1">Date</Dropdown.Item>
                             <Dropdown.Item eventKey="2">Location</Dropdown.Item>
                         </DropdownButton>
-                        <Button variant="primary" className="create-event-btn">
+                        <Button variant="primary" className="create-event-btn" onClick={routeChange}>
                             Create New Event
                         </Button>
                     </div>
                     <div className="event-list-container">
                         <div className="event-list">
-                            <EventCard/>
-                            <EventCard/>
-                            <EventCard/>
-                            <EventCard/>
-                            <EventCard/>
-                            <EventCard/>
+                            <EventCard />
+                            <EventCard />
+                            <EventCard />
+                            <EventCard />
+                            <EventCard />
+                            <EventCard />
                         </div>
                     </div>
                 </section>

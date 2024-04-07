@@ -260,7 +260,7 @@ button h3 {
     width: 50%;
     height: auto;
     margin: auto;
-    background: white;
+    background: rgb(255, 255, 255);
     padding: 2%;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     border-radius: 8px;
@@ -295,4 +295,66 @@ button h3 {
     border-color: #0056b3;
 }
 
+/* form css */
+
+.form {
+    background-color: #d9dce6;
+    width: 50%;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    padding: 3%;
+    margin: auto;
+    margin-top: 1%;
+    margin-bottom: 2%;
+}
+
+#form-header {
+    padding-top: 1%;
+    font-size: 30px;
+}
+
+.form-control {
+    padding: .5rem .75rem;
+    border-radius: .25rem;
+    border: 1px solid #ced4da;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25);
+}
+
+.form-label {
+    color: rgb(54, 54, 54);
+    text-align: left;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    padding: .5rem 1rem;
+    border-radius: .25rem;
+}
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+
+.form-control.is-invalid, .was-validated .form-control:invalid {
+    border-color: #dc3545;
+    padding-right: calc(1.5em + .75rem);
+    background-image: none;
+}
+
+.form button[type="submit"] {
+    display: block; /* Make button a block element */
+    margin-top: 1rem; /* Add some margin on the top */
+    margin-left: auto; /* Align to the right */
+    margin-right: 0; /* Align to the right */
+}
 
