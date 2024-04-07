@@ -22,7 +22,7 @@ def upload_to_event_directory(instance, filename):
     return f"events/{instance.event.id}/{filename}" # the path needs to be dynamic to upload the media files to the S3 based on what the event actually is
 
 class MediaUpload(models.Model):
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, related_name='media_uploads', on_delete=models.CASCADE)
     upload = models.FileField(upload_to=upload_to_event_directory) # call the dynmamic path to upload the file to 
     uploaded_at = models.DateTimeField(auto_now_add=True) # give the date/time the file was uploaded
 
