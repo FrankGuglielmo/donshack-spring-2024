@@ -8,9 +8,11 @@ import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 
 function ProfilePage() {
-  const { getIdTokenClaims, isLoading, logout } = useAuth0();
+  const { getIdTokenClaims, isLoading, isAuthenticated, loginWithRedirect } =
+    useAuth0();
   const [userName, setUserName] = useState("");
   const [users, setUsers] = useState([]);
+  const [curUserID, setCurUserID] = useState(null);
 
   const [events, setEvents] = useState([]);
 
@@ -37,6 +39,8 @@ function ProfilePage() {
                 (user) => user.name === email
               );
 
+              setCurUserID(userWithUsername.id);
+
               if (!userWithUsername) {
                 // User doesn't exist, proceed to create a new user with a POST request
                 console.log("User not found, creating a new user.");
@@ -62,6 +66,7 @@ function ProfilePage() {
                       "User created successfully:",
                       postResponse.data
                     );
+                    setCurUserID(postResponse.data.id);
                   })
                   .catch((postError) => {
                     console.error("Error creating user:", postError);
@@ -79,26 +84,25 @@ function ProfilePage() {
     fetchUserProfile();
   }, [getIdTokenClaims, isLoading]);
 
-  //TODO: only pull events associated w the currently authenticated user
-  useEffect(() => {
-    // Function to fetch events
-    const fetchEvents = async () => {
-      try {
-        const response = await fetch(
-          "https://contract-manager.aquaflare.io/events/"
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setEvents(data);
-      } catch (error) {
-        console.error("Fetching events failed: ", error);
-      }
-    };
+  // Function to fetch events
+  const fetchEvents = async () => {
+    try {
+      const response = await axios.get(
+        "https://contract-manager.aquaflare.io/events/"
+      );
+      const allEvents = response.data;
 
+      const userEvents = allEvents.filter((e) => e.hosted_by === curUserID);
+      setEvents(userEvents);
+    } catch (error) {
+      console.error("Fetching events failed: ", error);
+    }
+  };
+
+  //   TODO: this *might* need to be updated every time events changes but maybe not idk let's see later?
+  useEffect(() => {
     fetchEvents();
-  }, []);
+  }, [curUserID]); //dependency; every time curUserID changes, re-fetch events
 
   let navigate = useNavigate();
   const routeChange = () => {
@@ -148,8 +152,11 @@ function ProfilePage() {
                   marginRight: "10px",
                 }}
               >
-                {/* TODO: Create new event page and "onclick" action */}
-                <Button onClick={routeChange}>Create New Event</Button>
+                <Button
+                  onClick={isAuthenticated ? routeChange : loginWithRedirect}
+                >
+                  Create New Event
+                </Button>
               </div>
             </div>
             <div className="event-list-container">
