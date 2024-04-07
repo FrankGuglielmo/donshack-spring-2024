@@ -4,19 +4,19 @@ services:
   web:
     build: .
     env_file:
-      - .env  # Specifies the file from which to read environment variables
+      - .env  # we want to load the env file to get the secrets
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
     ports:
       - "8000:8000"
-  tunnel:
+  tunnel: # specify the tunnel as the cloudflare tunnel to actually host the backend 
     container_name: cloudflared-tunnel
     image: cloudflare/cloudflared
     restart: unless-stopped
     command: tunnel run
-    environment:
-      - TUNNEL_TOKEN=eyJhIjoiYzBiOGUyYTAxZTgwY2Q3MTA2ZTBlOThlOTZmNTQxNWYiLCJ0IjoiMWQ0YzVmMzktYmVmYi00NzBhLWIwN2MtNTFhNThiOTUyYTJhIiwicyI6IlpHTmtPVFl3TXpRdE5tSTBZeTAwTXpsaUxUZzJNRGt0TkRrd05UVTFPVEkyWlRSaSJ9
+    environment: # TODO we need to move this token to the .env and consume as a secret
+      - TUNNEL_TOKEN=eyJhIjoiYzBiOGUyYTAxZTgwY2Q3MTA2ZTBlOThlOTZmNTQxNWYiLCJ0IjoiMWQ0YzVmMzktYmVmYi00NzBhLWIwN2MtNTFhNThiOTUyYTJhIiwicyI6IlpHTmtPVFl3TXpRdE5tSTBZeTAwTXpsaUxUZzJNRGt0TkRrd05UVTFPVEkyWlRSaSJ9 
 
 volumes:
   db_data:
