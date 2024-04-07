@@ -118,7 +118,7 @@ class MediaUploadViewSet(viewsets.ModelViewSet):
             file_content.close()
 
     @action(detail=True, methods=['delete'], url_path='delete-from-event')
-    def delete_specific_media_upload(self, request, pk=None):
+    def delete_specific_media_upload(self, request, pk=None):  # route /media_uploads/{media_id}/delete-from-event/
         """
         Delete a specific media upload.
         """
