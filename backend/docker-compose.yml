@@ -3,11 +3,8 @@ version: '3.8'
 services:
   web:
     build: .
-    environment:
-      DJANGO_DEBUG: ${DJANGO_DEBUG}
-      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
-    # The command is simplified to just start Django's development server.
-    # Ensure your Django project is correctly configured to run with these settings.
+    env_file:
+      - .env  # Specifies the file from which to read environment variables
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
