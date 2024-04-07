@@ -71,7 +71,7 @@ class EventViewSet(viewsets.ModelViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
     
     @action(detail=True, methods=['get'], url_path='media-uploads')
-    def get_media_uploads(self, request, pk=None):
+    def get_media_uploads(self, request, pk=None):  ## route /events/{event_id}/media-uploads/
         """
         Retrieve all media uploads for a specific event.
         """
