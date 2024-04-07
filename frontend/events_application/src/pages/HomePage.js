@@ -56,10 +56,12 @@ function HomePage() {
             <section id="events">
                 <section>
                     <div className='buttons'>
-                        <DropdownButton as={ButtonGroup} title="Filter" id="bg-nested-dropdown">
+                        {/* <DropdownButton as={ButtonGroup} title="Filter" id="bg-nested-dropdown">
                             <Dropdown.Item eventKey="1">Date</Dropdown.Item>
-                            <Dropdown.Item eventKey="2">Location</Dropdown.Item>
-                        </DropdownButton>
+                        </DropdownButton> */}
+                        <Button variant="primary" className="create-event-btn" onClick={routeChange}>
+                            Scroll To Current Month
+                        </Button>
                         <Button variant="primary" className="create-event-btn" onClick={routeChange}>
                             Create New Event
                         </Button>
