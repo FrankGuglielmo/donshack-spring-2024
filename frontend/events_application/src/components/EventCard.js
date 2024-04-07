@@ -22,7 +22,7 @@ export default function EventCard({ event }) {
     >
       <div className='event-card-content'>
         <h3>{event.title}</h3>
-        <p>{new Date(event.date).toDateString()}</p>
+        <p style={{color: 'white'}} >{new Date(event.date).toDateString()}</p>
       </div>
     </div>
   );
