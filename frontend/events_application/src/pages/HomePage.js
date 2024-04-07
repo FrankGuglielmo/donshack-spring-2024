@@ -1,77 +1,92 @@
-import React, { useState , useEffect } from 'react';
-import NavbarMain from '../components/Navbar';
-import Footer from '../components/Footer';
-import Button from 'react-bootstrap/Button';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import DropdownButton from 'react-bootstrap/DropdownButton';
-import Dropdown from 'react-bootstrap/Dropdown';
-import EventCard from '../components/EventCard';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import NavbarMain from "../components/Navbar";
+import Footer from "../components/Footer";
+import Button from "react-bootstrap/Button";
+import ButtonGroup from "react-bootstrap/ButtonGroup";
+import DropdownButton from "react-bootstrap/DropdownButton";
+import Dropdown from "react-bootstrap/Dropdown";
+import EventCard from "../components/EventCard";
+import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import "../styles/home.css";
 
 function HomePage() {
+  const navigate = useNavigate();
+  const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
+  const [events, setEvents] = useState([]);
 
-    const navigate = useNavigate();
-    const { loginWithRedirect, logout, isAuthenticated } = useAuth0();  
-    const [events, setEvents] = useState([]);
+  useEffect(() => {
+    // Function to fetch events
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch(
+          "https://contract-manager.aquaflare.io/events/"
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setEvents(data);
+      } catch (error) {
+        console.error("Fetching events failed: ", error);
+      }
+    };
 
-    useEffect(() => {
-        // Function to fetch events
-        const fetchEvents = async () => {
-            try {
-                const response = await fetch('https://contract-manager.aquaflare.io/events/');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                setEvents(data);
-            } catch (error) {
-                console.error("Fetching events failed: ", error);
-            }
-        };
+    fetchEvents();
+  }, []);
 
-        fetchEvents();
-    }, []);
-
-      const routeChange = () => {
-    navigate(`/create-event`);
+  const routeChange = () => {
+    navigate(`/createEvent`);
   };
 
-    return (
-        <main>
-            <header>
-                <NavbarMain />
-            </header>
-            <section id="home-blurb">
-                <h2>Our App Intro, blah blah blah amazing photo app</h2>
-                <p>HELLO WE ARE A PHOPTO UPLOADING APP BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAHB LAHB BLAHB ALBHALBJ  sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Orci porta non pulvinar neque laoreet suspendisse interdum consectetur. Amet justo donec enim diam vulputate ut pharetra sit amet. In hac habitasse platea dictumst vestibulum rhoncus est.</p>
-            </section>
-            <section id="events">
-                <section>
-                    <div className='buttons'>
-                        <Button variant="primary" className="create-event-btn" onClick={routeChange}>
-                            Scroll To Current Month
-                        </Button>
-                        <Button variant="primary" className="create-event-btn" onClick={isAuthenticated ? routeChange : loginWithRedirect}>
-                            Create New Event
-                        </Button>
-                    </div>
-                    <div className="event-list-container">
-                        <div className="event-list">
-                            {events.map(event => (
-                                <EventCard key={event.id} event={event} />
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
-            </section>
-            <footer>
-                <Footer />
-            </footer>
-        </main>
-    );
+  return (
+    <main>
+      <header>
+        <NavbarMain />
+      </header>
+      <section id="home-blurb">
+        <h2>Our App Intro, blah blah blah amazing photo app</h2>
+        <p>
+          HELLO WE ARE A PHOPTO UPLOADING APP BLAH BLAH BLAH BLAH BLAH BLAH BLAH
+          BLAHB LAHB BLAHB ALBHALBJ sed do eiusmod tempor incididunt ut labore
+          et dolore magna aliqua. Orci porta non pulvinar neque laoreet
+          suspendisse interdum consectetur. Amet justo donec enim diam vulputate
+          ut pharetra sit amet. In hac habitasse platea dictumst vestibulum
+          rhoncus est.
+        </p>
+      </section>
+      <section id="events">
+        <section>
+          <div className="buttons">
+            <Button
+              variant="primary"
+              className="create-event-btn"
+              onClick={routeChange}
+            >
+              Scroll To Current Month
+            </Button>
+            <Button
+              variant="primary"
+              className="create-event-btn"
+              onClick={isAuthenticated ? routeChange : loginWithRedirect}
+            >
+              Create New Event
+            </Button>
+          </div>
+          <div className="event-list-container">
+            <div className="event-list">
+              {events.map((event) => (
+                <EventCard key={event.id} event={event} />
+              ))}
+            </div>
+          </div>
+        </section>
+      </section>
+      <footer>
+        <Footer />
+      </footer>
+    </main>
+  );
 }
 
 export default HomePage;

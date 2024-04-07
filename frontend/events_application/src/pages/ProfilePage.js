@@ -106,7 +106,7 @@ function ProfilePage() {
 
   let navigate = useNavigate();
   const routeChange = () => {
-    let path = `/create-event`;
+    let path = `/createEvent`;
     navigate(path);
   };
 
