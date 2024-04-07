@@ -10,6 +10,7 @@ import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
+import DOMPurify from "dompurify";
 
 function FormExample() {
   const {
@@ -77,8 +78,8 @@ function FormExample() {
     try {
       //Update DB
       const newEvent = new FormData();
-      newEvent.append("title", values.eventTitle);
-      newEvent.append("description", values.description);
+      newEvent.append("title", DOMPurify.sanitize(values.eventTitle)); //Sanitize user input
+      newEvent.append("description", DOMPurify.sanitize(values.description)); //Sanitize user input
       newEvent.append("date", values.date);
       newEvent.append("cover_photo", values.file);
       newEvent.append("hosted_by", curUserID);
