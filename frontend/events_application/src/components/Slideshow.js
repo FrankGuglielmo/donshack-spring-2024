@@ -16,6 +16,7 @@ export default function Slideshow({ images }) {
 
     return (
         <div className="slideshow">
+            
             {images.map((image, i) => (
                 <img
                     key={i}
