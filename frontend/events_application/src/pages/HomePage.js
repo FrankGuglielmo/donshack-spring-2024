@@ -11,6 +11,7 @@ function HomePage() {
   const navigate = useNavigate();
   const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
   const [events, setEvents] = useState([]);
+  const [hover, setHover] = useState(false);
 
   useEffect(() => {
     // Function to fetch events
@@ -36,16 +37,21 @@ function HomePage() {
     navigate(`/createEvent`);
   };
 
+  const style = {
+    backgroundColor: hover ? '#C75222' : '#EF8356',
+    border: '1px solid #FF6B2D',
+    cursor: 'pointer',
+  };
+
   return (
     <main>
       <header>
         <NavbarMain />
       </header>
       <section id="home-blurb">
-        <h2>Our App Intro, blah blah blah amazing photo app</h2>
+        <h1>Clixz</h1>
         <p>
-          HELLO WE ARE A PHOPTO UPLOADING APP BLAH BLAH BLAH BLAH BLAH BLAH BLAH
-          BLAHB LAHB BLAHB ALBHALBJ sed do eiusmod tempor incididunt ut labore
+          sed do eiusmod tempor incididunt ut labore
           et dolore magna aliqua. Orci porta non pulvinar neque laoreet
           suspendisse interdum consectetur. Amet justo donec enim diam vulputate
           ut pharetra sit amet. In hac habitasse platea dictumst vestibulum
@@ -55,9 +61,12 @@ function HomePage() {
       <section id="events">
         <section>
           <div className="buttons">
+            <h2> Events: </h2>
             <Button
-              variant="primary"
               className="create-event-btn"
+              style={style}
+              onMouseEnter={() => setHover(true)}
+              onMouseLeave={() => setHover(false)}
               onClick={isAuthenticated ? routeChange : loginWithRedirect}
             >
               Create New Event

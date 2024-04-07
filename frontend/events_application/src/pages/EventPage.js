@@ -9,12 +9,13 @@ import "../styles/home.css";
 import axios from "axios";
 
 function EventPage() {
-  const [eventMedia, setEventMedia] = useState([]);
-  const eventGalleryRef = useRef(null);
-  const navigate = useNavigate();
-  const { eventId } = useParams(); // Corrected import from react-router-dom
-  const location = useLocation();
-  const { event } = location.state || {}; // Retrieve event details or set to empty object if undefined
+    const [eventMedia, setEventMedia] = useState([]);
+    const eventGalleryRef = useRef(null);
+    const navigate = useNavigate();
+    const { eventId } = useParams(); // Corrected import from react-router-dom
+    const location = useLocation();
+    const { event } = location.state || {}; // Retrieve event details or set to empty object if undefined
+    const [hover, setHover] = useState(false);
 
   useEffect(() => {
     const fetchEventMedia = async () => {
@@ -48,7 +49,6 @@ function EventPage() {
         console.error("Failed to fetch event data", error);
       }
     };
-
     fetchEventMedia();
     if (!event) {
       fetchEventData();
@@ -63,6 +63,12 @@ function EventPage() {
     );
   };
 
+    const style = {
+        backgroundColor: hover ? '#C75222' : '#EF8356',
+        border: '1px solid #FF6B2D',
+        cursor: 'pointer',
+    };
+  
   const scrollToGallery = () => {
     eventGalleryRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -112,53 +118,50 @@ function EventPage() {
     }
   };
 
-  return (
-    <main>
-      <header>
-        <NavbarMain />
-      </header>
-      <div className="photo-grid-display">
-        <Slideshow images={eventMedia} />
-        <div className="overlay">
-          <section id="home-blurb">
-            <h2>{event.title}</h2>
-            <br />
-            <p>{event.description}</p>
-          </section>
-          <button className="scroll-down-btn" onClick={scrollToGallery}>
-            <FaArrowDown size={25} />
-          </button>
-        </div>
-      </div>
-      <section id="event-gallery" ref={eventGalleryRef}>
-        <div className="d-flex justify-content-end">
-          {/* TODO: Upload media
-                    1. Popup?
-                    2. update db */}
-          <Button onClick={openPopup}>Add Your Photo</Button>
-        </div>
-        <div className="photo-container">
-          <div className="photo-gallery">
-            {eventMedia.length > 0 ? (
-              eventMedia.map((upload, index) => (
-                <button
-                  className="photo"
-                  key={index}
-                  onClick={() => handlePhotoClick(index)}
-                >
-                  <img src={upload} alt={`Event Photo ${index + 1}`} />
-                </button>
-              ))
-            ) : (
-              <h3 id="noImg">There are no current photos for this event.</h3>
-            )}
-          </div>
-        </div>
-      </section>
-      <footer>
-        <Footer />
-      </footer>
-    </main>
+    return (
+        <main>
+            <header>
+                <NavbarMain />
+            </header>
+            <div className="photo-grid-display">
+                <Slideshow images={eventMedia} />
+                <div className="overlay">
+                    <section id="event-blurb" style={{color: 'white'}}>
+                        <h2>{event.title}</h2>
+                        <br />
+                        <p style={{color: 'white'}}> {event.description}</p>
+                    </section>
+                    <button className="scroll-down-btn" onClick={scrollToGallery}>
+                        <FaArrowDown size={25} />
+                    </button>
+                </div>
+            </div>
+            <section id="event-gallery" ref={eventGalleryRef}>
+                <div className="d-flex justify-content-end">
+                    <Button className="add-photo-btn mt-2" style={style}
+                        onMouseEnter={() => setHover(true)}
+                        onMouseLeave={() => setHover(false)}>
+                        Add Your Photos
+                    </Button>
+                </div>
+                <div className="photo-container">
+                    <div className="photo-gallery">
+                        {eventMedia.length > 0 ? (
+                            eventMedia.map((upload, index) => (
+                                <button className="photo" key={index} onClick={() => handlePhotoClick(index)}>
+                                    <img src={upload} alt={`Event Photo ${index + 1}`} />
+                                </button>
+                            ))
+                        ) : (
+                            <h3 id="noImg">There are no current photos for this event.</h3>
+                        )}
+                    </div>
+                </div>
+            </section>
+            <footer>
+                <Footer />
+            </footer>
+        </main>
   );
 }
 
