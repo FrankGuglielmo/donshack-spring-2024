@@ -9,24 +9,24 @@ export default function NavbarMain() {
   const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
   return (
     <>
-      <Navbar style={{backgroundColor: '#C4D6E6'}}>
+      <Navbar style={{ backgroundColor: '#C4D6E6' }}>
         <Container>
-        <Navbar.Brand href="/">
+          <Navbar.Brand href="/">
             <img
               src={tempLogo}
               alt="temp logo"
-              style={{ height: '50px', borderRadius: '30px' }}
+              style={{ height: '50px', borderRadius: '28px' }}
             />
           </Navbar.Brand>
           <Nav className="justify-content-end">
-<NavDropdown
+            <NavDropdown
               className="dropdown bg-large"
               title="☰"
               id="basic-nav-dropdown"
               align="end"
-              style={{ fontSize: "23px" }}
+              style={{ fontSize: "30px" }}
             >
-              <NavDropdown.Item className="nav-item" href="/">
+              <NavDropdown.Item className="nav-item" href="/" >
                 Home
               </NavDropdown.Item>
               {isAuthenticated && (

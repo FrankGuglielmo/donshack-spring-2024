@@ -1,4 +1,3 @@
-import React from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import Button from 'react-bootstrap/Button';
@@ -7,6 +6,7 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import NavbarMain from '../components/Navbar';
 import Footer from '../components/Footer';
+import React, { useState, useEffect } from "react";
 
 function FormExample() {
     const schema = yup.object().shape({
@@ -16,6 +16,13 @@ function FormExample() {
         description: yup.string().required('Description is required'),
         file: yup.mixed().required('An image file is required'),
     });
+
+    const [hover, setHover] = useState(false);
+    const style = {
+        backgroundColor: hover ? '#C75222' : '#EF8356',
+        border: '1px solid #FF6B2D',
+        cursor: 'pointer',
+    };
 
     return (
         <main>
@@ -104,7 +111,8 @@ function FormExample() {
                             />
                             <Form.Control.Feedback type="invalid">{errors.file}</Form.Control.Feedback>
                         </Form.Group>
-                        <Button type="submit" className="mt-3">Submit form</Button>
+                        <Button type="submit" className="mt-3" style={style} onMouseEnter={() => setHover(true)}
+                            onMouseLeave={() => setHover(false)}>Submit</Button>
                     </Form>
                 )}
             </Formik>

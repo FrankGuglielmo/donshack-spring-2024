@@ -63,7 +63,6 @@ function HomePage() {
           <div className="buttons">
             <h2> Events: </h2>
             <Button
-              // variant="primary"
               className="create-event-btn"
               style={style}
               onMouseEnter={() => setHover(true)}

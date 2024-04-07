@@ -342,7 +342,9 @@ button h3 {
 /* form css */
 
 .form {
-    background-color: #d9dce6;
+    background-color: #fbe47d80;
+    border: solid #FBE37D 1px;
+    border-radius: 20px;
     width: 50%;
     display: block;
     justify-content: center;
@@ -356,6 +358,8 @@ button h3 {
 #form-header {
     padding-top: 1%;
     font-size: 30px;
+    text-align: start;
+    margin-left: 10%;
 }
 
 .form-control {
