@@ -2,9 +2,6 @@ import React, { useState, useEffect } from "react";
 import NavbarMain from "../components/Navbar";
 import Footer from "../components/Footer";
 import Button from "react-bootstrap/Button";
-import ButtonGroup from "react-bootstrap/ButtonGroup";
-import DropdownButton from "react-bootstrap/DropdownButton";
-import Dropdown from "react-bootstrap/Dropdown";
 import EventCard from "../components/EventCard";
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -58,13 +55,6 @@ function HomePage() {
       <section id="events">
         <section>
           <div className="buttons">
-            <Button
-              variant="primary"
-              className="create-event-btn"
-              onClick={routeChange}
-            >
-              Scroll To Current Month
-            </Button>
             <Button
               variant="primary"
               className="create-event-btn"

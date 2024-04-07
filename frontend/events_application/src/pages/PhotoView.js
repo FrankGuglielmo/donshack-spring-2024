@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react";
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from 'react-router-dom';
 import { IoMdClose } from "react-icons/io";
 import { IoMdDownload } from "react-icons/io";
 import { IoIosWarning } from "react-icons/io";
@@ -11,7 +11,7 @@ import "../styles/home.css";
 function PhotoView() {
     const navigate = useNavigate();
     const location = useLocation();
-    const { images, selectedIndex, eventId } = location.state;
+    const { images, selectedIndex, eventId, event } = location.state;
     const [currentIndex, setCurrentIndex] = useState(parseInt(selectedIndex, 10) || 0);
     const [isReportFormVisible, setIsReportFormVisible] = useState(false);
 
@@ -21,13 +21,23 @@ function PhotoView() {
 
     const goToPhoto = (step) => {
         const nextIndex = (currentIndex + step + images.length) % images.length;
-        navigate(`/photo/${nextIndex}?eventId=${eventId}`, { state: { images, selectedIndex: nextIndex, eventId } });
+        navigate(`/photo/${nextIndex}?eventId=${eventId}`, { state: { images, selectedIndex: nextIndex, event, eventId } });
     };
 
     const toggleReportForm = () => setIsReportFormVisible((isVisible) => !isVisible);
 
+    const downloadImage = () => {
+        const imageSrc = images[currentIndex];
+        const link = document.createElement('a');
+        link.href = imageSrc;
+        link.download = `Image-${currentIndex}.jpg`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };    
+
     const routeChange = () => {
-        navigate(`/event/${eventId}`);
+        navigate(`/event/${eventId}`, {state: { event } });
     };
 
     return (
@@ -40,7 +50,7 @@ function PhotoView() {
                     </button>
                     <div className="photo-number">{currentIndex + 1} / {images.length}</div>
                     <div className="rightBtns">
-                        <button className="leftBtn" onClick={routeChange}>
+                        <button className="leftBtn" onClick={downloadImage}>
                             <IoMdDownload size={25} />
                         </button>
                         <button id="warnBtn" onClick={toggleReportForm}>

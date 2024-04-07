@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import NavbarMain from '../components/Navbar';
 import Footer from '../components/Footer';
 import Button from 'react-bootstrap/Button';
@@ -12,6 +12,8 @@ function EventPage() {
     const eventGalleryRef = useRef(null);
     const navigate = useNavigate();
     const { eventId } = useParams(); // Corrected import from react-router-dom
+    const location = useLocation();
+    const { event } = location.state || {}; // Retrieve event details or set to empty object if undefined
 
     useEffect(() => {
         const fetchEventMedia = async () => {
@@ -29,12 +31,28 @@ function EventPage() {
             }
         };
 
+        const fetchEventData = async () => {
+            try {
+                const response = await fetch(`https://your-api-endpoint/events/${eventId}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const eventData = await response.json();
+                // Update your state with the fetched event data
+            } catch (error) {
+                console.error("Failed to fetch event data", error);
+            }
+        };
+
         fetchEventMedia();
-    }, [eventId]);
+        if (!event) {
+            fetchEventData();
+        }
+    }, [eventId, event]);
 
     const handlePhotoClick = (selectedIndex) => {
         const selectedMediaUrl = eventMedia[selectedIndex]; // already a URL string
-        navigate(`/photo/${encodeURIComponent(selectedMediaUrl)}?eventId=${eventId}`, { state: { images: eventMedia, selectedIndex, eventId } });
+        navigate(`/photo/${encodeURIComponent(selectedMediaUrl)}?eventId=${eventId}`, { state: { images: eventMedia, selectedIndex, eventId, event } });
     };
 
     const scrollToGallery = () => {
@@ -50,9 +68,9 @@ function EventPage() {
                 <Slideshow images={eventMedia} />
                 <div className="overlay">
                     <section id="home-blurb">
-                        <h2>DONS Hack 2024</h2>
+                        <h2>{event.title}</h2>
                         <br />
-                        <p>DONS Hack 2024 was an event associated with the University of San Francisco. It was hosted by two on-campus clubs, WIT & ACM. The event last from April 06, 2024 to April 08, 2024. This event was a Hackathon, which is a rigorous coding competition where students are given a short amount of time to develop some kind of application. Good Luck Students!</p>
+                        <p>{event.description}</p>
                     </section>
                     <button className="scroll-down-btn" onClick={scrollToGallery}>
                         <FaArrowDown size={25} />
@@ -66,9 +84,7 @@ function EventPage() {
                 <div className="photo-container">
                     <div className="photo-gallery">
                         {eventMedia.length > 0 ? (
-                            console.log(eventMedia),
                             eventMedia.map((upload, index) => (
-                                console.log(upload),
                                 <button className="photo" key={index} onClick={() => handlePhotoClick(index)}>
                                     <img src={upload} alt={`Event Photo ${index + 1}`} />
                                 </button>

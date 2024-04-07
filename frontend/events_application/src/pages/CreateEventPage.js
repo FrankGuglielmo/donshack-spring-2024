@@ -10,7 +10,6 @@ import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
-// import AWS from "aws-sdk"; // Import AWS SDK
 
 function FormExample() {
   const {
