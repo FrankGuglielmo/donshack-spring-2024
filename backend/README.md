@@ -4,12 +4,14 @@
 - Python 3.x installed on your system
 - Basic knowledge of Python
 - Download [Postman](https://www.postman.com/downloads/)
+- Your own `S3 bucket`
+- Your own `.env` file that contains your `AWS S3 secrets`
 
 ### Create Virtual Environment
 WINDOWS: env\Scripts\activate
 LINUX/MacOS: source env/bin/activate
 
-### Installing Dependancies
+### Installing Dependencies
 1.   `cd backend`
 2. `pip install -r requirements.txt`
 
