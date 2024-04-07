@@ -17,8 +17,7 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Load environment variables from .env file
-load_dotenv()
+load_dotenv() # load in the env vars from the the .env file to load the secrets
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -29,7 +28,7 @@ SECRET_KEY = 'django-insecure-*7#hbil=jhck=umuut1x!(su0x$tddnvu8ov&e4jrl@6jyg=iv
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["0.0.0.0", "localhost", "127.0.0.1", "contract-manager.aquaflare.io", "chupacabra.cs.usfca.edu"]
+ALLOWED_HOSTS = ["0.0.0.0", "localhost", "127.0.0.1", "contract-manager.aquaflare.io", "chupacabra.cs.usfca.edu", "localhost:3000"]
 
 
 # Application definition
@@ -52,23 +51,13 @@ INSTALLED_APPS = [
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = 'donshack-project-media'
-AWS_S3_REGION_NAME = 'us-west-1'  # e.g., 'us-west-1'
+AWS_S3_REGION_NAME = 'us-west-1' 
 AWS_S3_FILE_OVERWRITE = False
-# AWS_DEFAULT_ACL = 'public-read'
-
-AWS_DEFAULT_ACL = None
-
-print("AWS KEY ID: " , AWS_ACCESS_KEY_ID)
-print("AWS KEY ID SECRET: " , AWS_SECRET_ACCESS_KEY)
-
-# Configuration for making S3 default storage method for media files
-#STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_DEFAULT_ACL = None # remove the acl rule to allow all users to have access to the s3 bucket
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage' # set the file storage to actually be in the S3 bucket rather than the computer OS
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware', # always download CORS first to ensure all connections have the middleware
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -78,7 +67,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
+#CORS_ALLOW_ALL_ORIGINS = True # allowing all origins 
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "https://your-production-frontend-domain.com",
+]
+
 
 ROOT_URLCONF = 'dons_hack.urls'
 
