@@ -17,7 +17,20 @@ function ReportPhoto({ onClose }) {
     const handleSubmit = (event) => {
         event.preventDefault();
         setIsSubmitted(true);
+        setTimeout(() => {
+            onClose(); 
+        }, 3050);
     };
+
+    if (isSubmitted) {
+        return (
+            <div className="report-photo-container text-center">
+                <div className="text-success">
+                    Your report has been submitted and is under review by our team.
+                </div>
+            </div>
+        );
+    }
 
     return (
         <Form onSubmit={handleSubmit} className="report-photo-container">
@@ -43,7 +56,6 @@ function ReportPhoto({ onClose }) {
                     ))}
                 </div>
             </div>
-            {isSubmitted && <div className="text-success mt-2">Your report has been submitted and is under review by our team.</div>}
             <div className="d-flex justify-content-end mt-3">
                 <Button type="submit">Submit</Button>
             </div>
