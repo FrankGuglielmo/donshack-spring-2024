@@ -1,11 +1,8 @@
-from rest_framework import viewsets
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse, Response
+from rest_framework import viewsets, status
 from rest_framework.decorators import action
-from rest_framework.response import Response
-from django.contrib.auth.hashers import make_password
 from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.response import Response
-from rest_framework import status
-from .serializers import MediaUploadSerializer
 import boto3
 from django.conf import settings
 from io import BytesIO
@@ -23,18 +20,13 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 
-    def destroy(self, request, *args, **kwargs):
+    def destroy(self, request, *args, **kwargs): # need to specify the destroy of the ViewSet on how it should handle the deletion
         user = self.get_object()
-        
-        # Optionally, add any specific logic you need to handle before deleting the user
-        # For example, logging, sending notifications, etc.
-        
-        # Cascading delete will handle related objects if your models are set up with on_delete=models.CASCADE
         user.delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-    @action(detail=False, methods=['delete'], url_path='delete-all')
+    @action(detail=False, methods=['delete'], url_path='delete-all') # delete all method  TODO-- might need to create super users in the django admin to only have access
     def delete_all_users(self, request):
         User.objects.all().delete()
         return Response(status=status.HTTP_204_NO_CONTENT, data={"message": "All users have been deleted."})
