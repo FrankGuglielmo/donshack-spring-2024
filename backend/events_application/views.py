@@ -69,6 +69,16 @@ class EventViewSet(viewsets.ModelViewSet):
         event.delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    @action(detail=True, methods=['get'], url_path='media-uploads')
+    def get_media_uploads(self, request, pk=None):  ## route /events/{event_id}/media-uploads/
+        """
+        Retrieve all media uploads for a specific event.
+        """
+        event = get_object_or_404(Event, pk=pk)
+        media_uploads = MediaUpload.objects.filter(event=event)
+        serializer = MediaUploadSerializer(media_uploads, many=True)
+        return Response(serializer.data)
 
 class MediaUploadViewSet(viewsets.ModelViewSet):
     queryset = MediaUpload.objects.all()
