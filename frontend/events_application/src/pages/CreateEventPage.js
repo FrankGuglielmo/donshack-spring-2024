@@ -76,42 +76,20 @@ function FormExample() {
 
   const saveEvent = async (values) => {
     try {
-      // Upload file to S3
-      //   const s3 = new AWS.S3({
-      //     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-      //     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-      //   });
-
-      //   const params = {
-      //     Bucket: "your-bucket-name",
-      //     Key: values.file.name, // Use file name as key
-      //     Body: values.file,
-      //   };
-
-      //   const uploadResponse = await s3.upload(params).promise();
-      //   const s3Url = uploadResponse.Location;
-
-      const newEvent = {
-        title: values.eventTitle,
-        description: values.description,
-        date: values.date,
-        cover_photo: values.file,
-        hosted_by: curUserID,
-        saved_by: [],
-      };
-
-      console.log(newEvent);
       //Update DB
-      //1. Send file to S3? Get URL from S3? Then, build event object with cover_photo: s3.url
+      const newEvent = new FormData();
+      newEvent.append("title", values.eventTitle);
+      newEvent.append("description", values.description);
+      newEvent.append("date", values.date);
+      newEvent.append("cover_photo", values.file);
+      newEvent.append("hosted_by", curUserID);
 
-      axios
-        .post("https://contract-manager.aquaflare.io/events/", {
-          title: values.eventTitle,
-          description: values.description,
-          date: values.date,
-          cover_photo: values.file,
-          hosted_by: curUserID,
-          saved_by: [],
+      // Send POST request with FormData
+      await axios
+        .post("https://contract-manager.aquaflare.io/events/", newEvent, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         })
         .then(() => {
           console.log("Saved successfully!");
@@ -120,9 +98,9 @@ function FormExample() {
           console.error("Error saving event info:", error);
           console.log("Server Response:", error.response.data);
         });
-      //2. Post event object
-      //3. Editing events?
-      //4. Deleting events?
+
+      //TODO: Editing events?
+      //TODO: Deleting events?
 
       //Reroute to profile page
       routeChange();
@@ -158,7 +136,12 @@ function FormExample() {
           touched,
           errors,
         }) => (
-          <Form className="form" noValidate onSubmit={handleSubmit}>
+          <Form
+            className="form"
+            noValidate
+            onSubmit={handleSubmit}
+            encType="multipart/form-data"
+          >
             <Row>
               <Form.Group as={Col} controlId="validationFormik01">
                 <Form.Label className="form-label">Event Title</Form.Label>
