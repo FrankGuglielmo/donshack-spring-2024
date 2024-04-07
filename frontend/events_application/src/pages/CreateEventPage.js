@@ -14,7 +14,11 @@ function FormExample() {
         date: yup.date().required('Date is required'),
         time: yup.string().required('Time is required'),
         description: yup.string().required('Description is required'),
-        file: yup.mixed().required('An image file is required'),
+        file: yup.mixed().required('An image file is required').test("fileType", "Unsupported File Format", value => {
+            if (!value) return true; // bypassing validation if no file selected
+            const supportedFormats = ['image/jpg', 'image/jpeg', 'image/png'];
+            return supportedFormats.includes(value.type);
+        }),
     });
 
     return (
