@@ -3,6 +3,10 @@ html {
     height: 100%;
 }
 
+main {
+    background-color: #FBF8E3;
+}
+
 .photo-grid-display {
     position: relative;
     color: white;
@@ -44,10 +48,22 @@ html {
 #home-blurb {
     padding: 3% 4% 3% 4%;
     z-index: 2;
+    width: 80%;
+    margin: auto;
 }
 
-#home-blurb h2, 
+#home-blurb h1, 
 #home-blurb p {
+    text-align: start;
+}
+
+#event-blurb {
+    padding: 3% 4% 3% 4%;
+    z-index: 2;
+}
+
+#event-blurb h2, 
+#event-blurb p {
     text-align: start;
 }
 
@@ -64,7 +80,9 @@ html {
 
 
 #events {
-    background-color: #d8d8d8;
+    background-color: #f9f8f1;
+    border: solid #e7c942 1px;
+    border-radius: 20px;
     padding: 2%;
     width: 80%;
     justify-content: center;
@@ -83,8 +101,8 @@ html {
 .buttons {
     display: flex;
     flex-direction: row;
-    justify-content: end;
-    padding-bottom: 2%;
+    justify-content: space-between;
+    padding: 2%;
 }
 
 .event-list-container {
@@ -101,12 +119,12 @@ html {
   .event-card {
     position: relative;
     display: block;
-    width: 95%;
+    width: 100%;
     margin: auto;
     margin-bottom: 1rem;
     color: white;
     text-align: start;
-    padding: 2%;
+    padding: 3%;
     border: none;
     border-radius: 4px;
     cursor: pointer;

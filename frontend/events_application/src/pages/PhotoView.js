@@ -25,16 +25,19 @@ function PhotoView() {
     };
 
     const toggleReportForm = () => setIsReportFormVisible((isVisible) => !isVisible);
-
+    
     const downloadImage = () => {
-        const imageSrc = images[currentIndex];
+        const imageSrc = images[currentIndex]; // Ensure this is the direct URL to the S3 file
+    
+        // Optionally, if you want to force the download using JavaScript:
         const link = document.createElement('a');
         link.href = imageSrc;
-        link.download = `Image-${currentIndex}.jpg`;
+        link.setAttribute('download', true); // This line is optional and can be omitted if 'Content-Disposition' is set on S3
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-    };    
+    };
+    
 
     const routeChange = () => {
         navigate(`/event/${eventId}`, {state: { event } });

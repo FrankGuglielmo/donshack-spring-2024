@@ -67,7 +67,7 @@ function EventPage() {
             <div className="photo-grid-display">
                 <Slideshow images={eventMedia} />
                 <div className="overlay">
-                    <section id="home-blurb">
+                    <section id="event-blurb">
                         <h2>{event.title}</h2>
                         <br />
                         <p>{event.description}</p>

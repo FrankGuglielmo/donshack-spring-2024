@@ -9,7 +9,7 @@ export default function NavbarMain() {
   const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
   return (
     <>
-      <Navbar bg="dark" data-bs-theme="dark">
+      <Navbar style={{backgroundColor: '#C4D6E6'}}>
         <Container>
         <Navbar.Brand href="/">
             <img
