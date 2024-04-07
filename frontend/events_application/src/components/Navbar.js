@@ -3,7 +3,6 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { useAuth0 } from "@auth0/auth0-react";
-import Button from "react-bootstrap/Button";
 import tempLogo from "../imgs/tempLogo.jpeg";
 
 export default function NavbarMain() {
@@ -20,14 +19,6 @@ export default function NavbarMain() {
             />
           </Navbar.Brand>
           <Nav className="justify-content-end">
-            {/* <Nav.Link>
-              //If not already authenticated, generate a login button. Otherwise, logout. 
-              {!isAuthenticated ? (
-                <Button onClick={() => loginWithRedirect()}>Log In</Button>
-              ) : (
-                <Button onClick={() => logout()}>Log Out</Button>
-              )}
-            </Nav.Link> */}
             <NavDropdown
               className="dropdown bg-large"
               title="☰"

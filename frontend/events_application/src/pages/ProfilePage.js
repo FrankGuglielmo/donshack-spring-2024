@@ -8,34 +8,11 @@ import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 
 function ProfilePage() {
-  // this is a place holder for what would be the HostedEvents associated with the logged in user
-  const colors = ["#194b21", "#da4485", "#f0bbf7"];
-
   const { getIdTokenClaims, isLoading, logout } = useAuth0();
   const [userName, setUserName] = useState("");
   const [users, setUsers] = useState([]);
 
   const [events, setEvents] = useState([]);
-
-  useEffect(() => {
-    // Function to fetch events
-    const fetchEvents = async () => {
-      try {
-        const response = await fetch(
-          "https://contract-manager.aquaflare.io/events/"
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setEvents(data);
-      } catch (error) {
-        console.error("Fetching events failed: ", error);
-      }
-    };
-
-    fetchEvents();
-  }, []);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -101,6 +78,27 @@ function ProfilePage() {
     };
     fetchUserProfile();
   }, [getIdTokenClaims, isLoading]);
+
+  //TODO: only pull events associated w the currently authenticated user
+  useEffect(() => {
+    // Function to fetch events
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch(
+          "https://contract-manager.aquaflare.io/events/"
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setEvents(data);
+      } catch (error) {
+        console.error("Fetching events failed: ", error);
+      }
+    };
+
+    fetchEvents();
+  }, []);
 
   let navigate = useNavigate();
   const routeChange = () => {

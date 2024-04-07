@@ -11,7 +11,9 @@ import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 
 function HomePage() {
+  const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
   const [events, setEvents] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Function to fetch events
@@ -32,6 +34,10 @@ function HomePage() {
 
     fetchEvents();
   }, []);
+
+  const routeChange = () => {
+    navigate(`/create-event`);
+  };
 
   return (
     <main>
@@ -60,7 +66,11 @@ function HomePage() {
               <Dropdown.Item eventKey="1">Date</Dropdown.Item>
               <Dropdown.Item eventKey="2">Location</Dropdown.Item>
             </DropdownButton>
-            <Button variant="primary" className="create-event-btn">
+            <Button
+              variant="primary"
+              className="create-event-btn"
+              onClick={isAuthenticated ? routeChange : loginWithRedirect}
+            >
               Create New Event
             </Button>
           </div>
