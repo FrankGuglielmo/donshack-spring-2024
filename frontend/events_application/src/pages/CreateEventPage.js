@@ -276,4 +276,4 @@ function FormExample() {
   );
 }
 
-export default CreateEventForm;
+export default FormExample;
