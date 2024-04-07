@@ -51,11 +51,7 @@ function HomePage() {
       <section id="home-blurb">
         <h1>Clixz</h1>
         <p>
-          sed do eiusmod tempor incididunt ut labore
-          et dolore magna aliqua. Orci porta non pulvinar neque laoreet
-          suspendisse interdum consectetur. Amet justo donec enim diam vulputate
-          ut pharetra sit amet. In hac habitasse platea dictumst vestibulum
-          rhoncus est.
+          Here at Clixz we are more than a photo-sharing app; we're a community focused on spotlighting social justice and urban connectivity through the lens of those who live it. You are both the witness and the storyteller. Help spark dialogues, build bridges, and ignite action in your community. Every click is a story.
         </p>
       </section>
       <section id="events">
