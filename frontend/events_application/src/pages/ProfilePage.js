@@ -26,7 +26,7 @@ function ProfilePage() {
 
           // Make a GET request to fetch all users
           axios
-            .get("https://localhost:8000/users/", {
+            .get("https://contract-manager.aquaflare.io/users/", {
               withCredentials: true,
             })
             .then((response) => {
@@ -48,12 +48,16 @@ function ProfilePage() {
                 };
 
                 axios
-                  .post("https://localhost:8000/users/", newUser, {
-                    withCredentials: true,
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                  })
+                  .post(
+                    "https://contract-manager.aquaflare.io/users/",
+                    newUser,
+                    {
+                      withCredentials: true,
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                    }
+                  )
                   .then((postResponse) => {
                     console.log(
                       "User created successfully:",
