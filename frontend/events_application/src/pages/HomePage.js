@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import NavbarMain from "../components/Navbar";
 import Footer from "../components/Footer";
 import Button from "react-bootstrap/Button";
@@ -11,12 +11,28 @@ import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 
 function HomePage() {
-  const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
-  let navigate = useNavigate();
-  const routeChange = () => {
-    let path = `/create-event`;
-    navigate(path);
-  };
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    // Function to fetch events
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch(
+          "https://contract-manager.aquaflare.io/events/"
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setEvents(data);
+      } catch (error) {
+        console.error("Fetching events failed: ", error);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
   return (
     <main>
       <header>
@@ -44,24 +60,15 @@ function HomePage() {
               <Dropdown.Item eventKey="1">Date</Dropdown.Item>
               <Dropdown.Item eventKey="2">Location</Dropdown.Item>
             </DropdownButton>
-            <Button
-              variant="primary"
-              className="create-event-btn"
-              onClick={
-                !isAuthenticated ? () => loginWithRedirect() : routeChange
-              }
-            >
+            <Button variant="primary" className="create-event-btn">
               Create New Event
             </Button>
           </div>
           <div className="event-list-container">
             <div className="event-list">
-              <EventCard />
-              <EventCard />
-              <EventCard />
-              <EventCard />
-              <EventCard />
-              <EventCard />
+              {events.map((event) => (
+                <EventCard key={event.id} event={event} />
+              ))}
             </div>
           </div>
         </section>
