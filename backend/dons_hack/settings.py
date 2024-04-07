@@ -43,12 +43,25 @@ INSTALLED_APPS = [
     'corsheaders'
 ]
 
+# AWS Settings
+
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = 'donshack-project-media'
+AWS_S3_REGION_NAME = 'us-west-1'  # e.g., 'us-west-1'
+AWS_S3_FILE_OVERWRITE = False
+# AWS_DEFAULT_ACL = 'public-read'
+
+AWS_DEFAULT_ACL = None
+
+print("AWS KEY ID: " , AWS_ACCESS_KEY_ID)
+print("AWS KEY ID SECRET: " , AWS_SECRET_ACCESS_KEY)
+
+# Configuration for making S3 default storage method for media files
+#STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 
-
-
-
-
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
