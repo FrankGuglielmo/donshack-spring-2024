@@ -101,21 +101,31 @@ class MediaUploadViewSet(viewsets.ModelViewSet):
         file_content = BytesIO(file.read())
         # use the boto client to actually access the s3 and upload the file to the bucket
         s3_client = boto3.client('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-                                 aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-                                 region_name=settings.AWS_S3_REGION_NAME)
+                                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+                                region_name=settings.AWS_S3_REGION_NAME)
 
         try:
+            s3_key = f"events/{event_id}/{file.name}"  # path within the bucket where we want to store the media
+            content_disposition = f'attachment; filename="{file.name}"' # setting ContentDisposition for file download 
+            
+            s3_client.upload_fileobj(
+                Fileobj=file_content,
+                Bucket=settings.AWS_STORAGE_BUCKET_NAME,
+                Key=s3_key,
+                ExtraArgs={
+                    'ContentDisposition': content_disposition
+                }
+            )
 
-            s3_key = f"events/{event_id}/{file.name}" # path within the bucket where we want to store the media 
-            s3_client.upload_fileobj(file_content, settings.AWS_STORAGE_BUCKET_NAME, s3_key)
-            
+            # Assuming your MediaUpload model's 'upload' field can store the S3 key/path
             media_upload = MediaUpload.objects.create(event=event, upload=s3_key)
-            
+
             return Response({'message': 'File uploaded successfully to S3', 'event_id': event_id, 's3_key': s3_key}, status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         finally:
             file_content.close()
+
 
     @action(detail=True, methods=['delete'], url_path='delete-from-event')
     def delete_specific_media_upload(self, request, pk=None):  # route /media_uploads/{media_id}/delete-from-event/

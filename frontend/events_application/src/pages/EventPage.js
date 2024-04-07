@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from "react";
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import NavbarMain from '../components/Navbar';
-import Footer from '../components/Footer';
-import Button from 'react-bootstrap/Button';
-import Slideshow from '../components/Slideshow';
-import { FaArrowDown } from 'react-icons/fa';
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+import NavbarMain from "../components/Navbar";
+import Footer from "../components/Footer";
+import Button from "react-bootstrap/Button";
+import Slideshow from "../components/Slideshow";
+import { FaArrowDown } from "react-icons/fa";
 import "../styles/home.css";
+import axios from "axios";
 
 function EventPage() {
     const [eventMedia, setEventMedia] = useState([]);
@@ -14,50 +15,108 @@ function EventPage() {
     const { eventId } = useParams(); // Corrected import from react-router-dom
     const location = useLocation();
     const { event } = location.state || {}; // Retrieve event details or set to empty object if undefined
+    const [hover, setHover] = useState(false);
 
-    useEffect(() => {
-        const fetchEventMedia = async () => {
-            try {
-                const response = await fetch(`https://contract-manager.aquaflare.io/events/${eventId}/media-uploads`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                const mediaUrls = data.map(media => media.s3_url);
-                setEventMedia(mediaUrls);
-            } catch (error) {
-                console.error("Failed to fetch event media", error);
-            }
-        };
-
-        const fetchEventData = async () => {
-            try {
-                const response = await fetch(`https://your-api-endpoint/events/${eventId}`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const eventData = await response.json();
-                // Update your state with the fetched event data
-            } catch (error) {
-                console.error("Failed to fetch event data", error);
-            }
-        };
-
-        fetchEventMedia();
-        if (!event) {
-            fetchEventData();
+  useEffect(() => {
+    const fetchEventMedia = async () => {
+      try {
+        const response = await fetch(
+          `https://contract-manager.aquaflare.io/events/${eventId}/media-uploads`
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-    }, [eventId, event]);
 
-    const handlePhotoClick = (selectedIndex) => {
-        const selectedMediaUrl = eventMedia[selectedIndex]; // already a URL string
-        navigate(`/photo/${encodeURIComponent(selectedMediaUrl)}?eventId=${eventId}`, { state: { images: eventMedia, selectedIndex, eventId, event } });
+        const data = await response.json();
+        const mediaUrls = data.map((media) => media.s3_url);
+        setEventMedia(mediaUrls);
+      } catch (error) {
+        console.error("Failed to fetch event media", error);
+      }
     };
 
-    const scrollToGallery = () => {
-        eventGalleryRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const fetchEventData = async () => {
+      try {
+        const response = await fetch(
+          `https://your-api-endpoint/events/${eventId}`
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const eventData = await response.json();
+        // Update your state with the fetched event data
+      } catch (error) {
+        console.error("Failed to fetch event data", error);
+      }
     };
+    fetchEventMedia();
+    if (!event) {
+      fetchEventData();
+    }
+  }, [eventId, event]);
+
+  const handlePhotoClick = (selectedIndex) => {
+    const selectedMediaUrl = eventMedia[selectedIndex]; // already a URL string
+    navigate(
+      `/photo/${encodeURIComponent(selectedMediaUrl)}?eventId=${eventId}`,
+      { state: { images: eventMedia, selectedIndex, eventId, event } }
+    );
+  };
+
+    const style = {
+        backgroundColor: hover ? '#C75222' : '#EF8356',
+        border: '1px solid #FF6B2D',
+        cursor: 'pointer',
+    };
+  
+  const scrollToGallery = () => {
+    eventGalleryRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleFileSelect = async (file) => {
+    console.log("Selected file:", file);
+    console.log("eventid:", eventId);
+    try {
+      const formData = new FormData();
+      formData.append("upload", file);
+      formData.append("event", eventId);
+
+      console.log(formData);
+
+      await axios
+        .post(
+          `https://contract-manager.aquaflare.io/media_uploads/`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        )
+        .then((response) => {
+          console.log("Uploaded successfully!");
+          const uploadedPhotoUrl = response.data.s3_url;
+          setEventMedia([...eventMedia, uploadedPhotoUrl]); // Add the new photo URL to the eventMedia state to render dynamically on page
+        })
+        .catch((error) => {
+          console.error("Error uploading photo:", error);
+          console.log("Server Response:", error.response.data);
+        });
+    } catch (error) {
+      console.error("Failed to build image object:", error);
+    }
+  };
+
+  const openPopup = () => {
+    const isConfirmed = window.confirm("Upload an image?");
+    if (isConfirmed) {
+      const input = document.createElement("input");
+      input.type = "file";
+      input.accept = "image/*";
+      input.onchange = (event) => handleFileSelect(event.target.files[0]);
+      input.click();
+    }
+  };
 
     return (
         <main>
@@ -67,10 +126,10 @@ function EventPage() {
             <div className="photo-grid-display">
                 <Slideshow images={eventMedia} />
                 <div className="overlay">
-                    <section id="home-blurb">
+                    <section id="event-blurb" style={{color: 'white'}}>
                         <h2>{event.title}</h2>
                         <br />
-                        <p>{event.description}</p>
+                        <p style={{color: 'white'}}> {event.description}</p>
                     </section>
                     <button className="scroll-down-btn" onClick={scrollToGallery}>
                         <FaArrowDown size={25} />
@@ -79,7 +138,11 @@ function EventPage() {
             </div>
             <section id="event-gallery" ref={eventGalleryRef}>
                 <div className="d-flex justify-content-end">
-                    <Button variant="primary" className="add-photo-btn mt-2">Add Your Photos</Button>
+                    <Button className="add-photo-btn mt-2" style={style}
+                        onMouseEnter={() => setHover(true)}
+                        onMouseLeave={() => setHover(false)}>
+                        Add Your Photos
+                    </Button>
                 </div>
                 <div className="photo-container">
                     <div className="photo-gallery">
@@ -99,7 +162,7 @@ function EventPage() {
                 <Footer />
             </footer>
         </main>
-    );
+  );
 }
 
 export default EventPage;

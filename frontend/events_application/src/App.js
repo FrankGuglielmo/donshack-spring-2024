@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import Homepage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
 import EventPage from "./pages/EventPage";

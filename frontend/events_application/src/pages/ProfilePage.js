@@ -39,8 +39,6 @@ function ProfilePage() {
                 (user) => user.name === email
               );
 
-              setCurUserID(userWithUsername.id);
-
               if (!userWithUsername) {
                 // User doesn't exist, proceed to create a new user with a POST request
                 console.log("User not found, creating a new user.");
@@ -71,6 +69,8 @@ function ProfilePage() {
                   .catch((postError) => {
                     console.error("Error creating user:", postError);
                   });
+              } else {
+                setCurUserID(userWithUsername.id);
               }
             })
             .catch((error) => {
@@ -110,69 +110,72 @@ function ProfilePage() {
     navigate(path);
   };
 
+  const [hover, setHover] = useState(false);
+  const style = {
+    backgroundColor: hover ? '#C75222' : '#EF8356',
+    border: '1px solid #FF6B2D',
+    cursor: 'pointer',
+  };
+
   return (
-    <div>
+    <main>
       <header>
         <NavbarMain />
       </header>
       <div className="container">
-        <main>
-          <header>
-            <h1>Welcome!</h1>
-          </header>
+        <header>
+          <h1 style={{ paddingTop: '2%'}}>Welcome!</h1>
+        </header>
+        <div
+          id="events"
+        >
           <div
-            className="section"
             style={{
-              backgroundColor: "#72b794",
-              margin: "50px 50px",
               display: "flex",
-              flexDirection: "column",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
             }}
           >
-            <div
+            <h2
+              className="header"
               style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
+                textAlign: "left",
+                margin: "10px",
               }}
             >
-              <h1
-                className="header"
-                style={{
-                  textAlign: "left",
-                  margin: "10px",
-                }}
-              >
-                My Events:
-              </h1>
-              <div
-                style={{
-                  marginLeft: "auto",
-                  marginRight: "10px",
-                }}
-              >
-                <Button
-                  onClick={isAuthenticated ? routeChange : loginWithRedirect}
-                >
-                  Create New Event
-                </Button>
-              </div>
-            </div>
-            <div className="event-list-container">
-              <div className="event-list">
-                {events.map((event) => (
-                  <EventCard key={event.id} event={event} />
-                ))}
-              </div>
+              My Events:
+            </h2>
+            <div
+              style={{
+                marginLeft: "auto",
+                marginRight: "10px",
+              }}
+            >
+              <Button
+              className="create-event-btn"
+              style={style}
+              onMouseEnter={() => setHover(true)}
+              onMouseLeave={() => setHover(false)}
+              onClick={isAuthenticated ? routeChange : loginWithRedirect}
+            >
+              Create New Event
+            </Button>
             </div>
           </div>
-        </main>
+          <div className="event-list-container">
+            <div className="event-list">
+              {events.map((event) => (
+                <EventCard key={event.id} event={event} />
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
       <footer>
         <Footer />
       </footer>
-    </div>
+    </main>
   );
 }
 
