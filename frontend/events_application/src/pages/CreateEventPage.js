@@ -12,7 +12,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import DOMPurify from "dompurify";
 
-function FormExample() {
+// function to display create event form
+function CreateEventForm() {
   const {
     loginWithRedirect,
     logout,
@@ -20,14 +21,17 @@ function FormExample() {
     isLoading,
     getIdTokenClaims,
   } = useAuth0();
+  // initialized state for users
   const [userName, setUserName] = useState("");
   const [users, setUsers] = useState([]);
   const [curUserID, setCurUserID] = useState(null);
 
+  // navigating to profile route change
   const navigate = useNavigate();
   const routeChange = () => {
     navigate(`/profile`);
   };
+
   const schema = yup.object().shape({
         eventTitle: yup.string().required('Event title is required'),
         date: yup.date().required('Date is required'),
@@ -40,6 +44,7 @@ function FormExample() {
         }),
     });
 
+    // fetching user profile 
   useEffect(() => {
     const fetchUserProfile = async () => {
       if (!isLoading) {
@@ -76,6 +81,7 @@ function FormExample() {
     fetchUserProfile();
   }, [getIdTokenClaims, isLoading]);
 
+  // functionality that saves users created events
   const saveEvent = async (values) => {
     try {
       //Update DB
@@ -278,4 +284,4 @@ function FormExample() {
   );
 }
 
-export default FormExample;
+export default CreateEventForm;

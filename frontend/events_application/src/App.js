@@ -10,6 +10,7 @@ import { Analytics } from "@vercel/analytics/react"
 
 function App() {
   return (
+    // handles routing for entire frontend UI, including homepage
     <div className="App">
       <Router basename="/">
         <Analytics />

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 export default function EventCard({ event }) {
   const navigate = useNavigate();
 
+  // route of event
   const routeChange = () => {
     navigate(`/event/${event.id}`, { state: { event } });
   };

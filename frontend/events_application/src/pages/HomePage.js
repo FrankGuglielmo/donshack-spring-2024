@@ -8,15 +8,23 @@ import { useAuth0 } from "@auth0/auth0-react";
 import "../styles/home.css";
 
 function HomePage() {
+  // hook that returns navigation prop
+  // use for route change w/ create event button
   const navigate = useNavigate();
+  // auth0 state used to check whether signed in or signed out
   const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
+  // event states to store fetched db data
   const [events, setEvents] = useState([]);
+  // hover state css for buttons
   const [hover, setHover] = useState(false);
 
   useEffect(() => {
-    // Function to fetch events
+    // async function to fetch events from backend db
+    // i.e event title, date, photos, etc.
     const fetchEvents = async () => {
       try {
+        // using async & await in order to propery "wait" for data
+        // data is in API root
         const response = await fetch(
           "https://contract-manager.aquaflare.io/events/"
         );
@@ -24,19 +32,23 @@ function HomePage() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
+        // set events state with retrieved data
         setEvents(data);
       } catch (error) {
         console.error("Fetching events failed: ", error);
       }
     };
 
+    // function call
     fetchEvents();
   }, []);
 
+  // route change functionality for create event button
   const routeChange = () => {
     navigate(`/createEvent`);
   };
 
+  // style function for buttons
   const style = {
     backgroundColor: hover ? '#C75222' : '#EF8356',
     border: '1px solid #FF6B2D',
@@ -46,6 +58,7 @@ function HomePage() {
   return (
     <main>
       <header>
+        {/* navbar component call */}
         <NavbarMain />
       </header>
       <section id="home-blurb">
@@ -61,7 +74,9 @@ function HomePage() {
       <section id="events">
         <section>
           <div className="buttons">
+            {/* list of all total events in db */}
             <h2> Events: </h2>
+            {/* create new event button */}
             <Button
               className="create-event-btn"
               style={style}
@@ -74,6 +89,7 @@ function HomePage() {
           </div>
           <div className="event-list-container">
             <div className="event-list">
+              {/* event card component call for each individual event*/}
               {events.map((event) => (
                 <EventCard key={event.id} event={event} />
               ))}
@@ -82,6 +98,7 @@ function HomePage() {
         </section>
       </section>
       <footer>
+        {/* footer component call */}
         <Footer />
       </footer>
     </main>
