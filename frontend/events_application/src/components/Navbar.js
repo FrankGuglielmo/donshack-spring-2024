@@ -3,7 +3,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { useAuth0 } from "@auth0/auth0-react";
-import tempLogo from '../imgs/tempLogo.jpeg';
+import Logo from '../imgs/clixz_logo.png';
 
 export default function NavbarMain() {
   const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
@@ -13,9 +13,9 @@ export default function NavbarMain() {
         <Container>
           <Navbar.Brand href="/">
             <img
-              src={tempLogo}
-              alt="temp logo"
-              style={{ height: '50px', borderRadius: '28px' }}
+              src={Logo}
+              alt="logo"
+              style={{ height: '60px'}}
             />
           </Navbar.Brand>
           <Nav className="justify-content-end">
