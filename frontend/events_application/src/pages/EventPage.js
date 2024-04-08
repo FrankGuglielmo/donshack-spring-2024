@@ -184,9 +184,9 @@ function EventPage() {
           </div>
         </div>
       </section>
-      <footer>
+      {/* <footer>
         <Footer />
-      </footer>
+      </footer> */}
     </main>
   );
 }
