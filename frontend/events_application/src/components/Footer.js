@@ -11,7 +11,7 @@ export default function Footer() {
                             <p>&copy; 2024 Clixz <img
                                 src={Logo}
                                 alt="logo"
-                                style={{ height: '30px', p: '2%' }}
+                                style={{ height: '30px', p: '2%', justifyContent: 'center', alignItems: 'center' }}
                             />
                             All rights reserved.</p>
                         </div>
