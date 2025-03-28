@@ -23,13 +23,22 @@ load_dotenv() # load in the env vars from the the .env file to load the secrets
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-*7#hbil=jhck=umuut1x!(su0x$tddnvu8ov&e4jrl@6jyg=iv'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-*7#hbil=jhck=umuut1x!(su0x$tddnvu8ov&e4jrl@6jyg=iv')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
 
-ALLOWED_HOSTS = ["0.0.0.0", "localhost", "127.0.0.1", "contract-manager.aquaflare.io", "chupacabra.cs.usfca.edu", "localhost:3000"]
-
+# Update this with your EC2 instance domain or IP
+ALLOWED_HOSTS = [
+    "0.0.0.0", 
+    "localhost", 
+    "127.0.0.1", 
+    "contract-manager.aquaflare.io", 
+    "chupacabra.cs.usfca.edu", 
+    "localhost:3000",
+    # Add your EC2 instance domain/IP below
+    "ec2-instance-domain.amazonaws.com"  # Replace with your actual EC2 domain
+]
 
 # Application definition
 
@@ -48,9 +57,14 @@ INSTALLED_APPS = [
 
 # AWS Settings
 
-AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = 'donshack-project-media'
+# In production with IAM role, boto3 will use the instance's credentials automatically
+# Only use explicit credentials in development environment
+if 'AWS_ACCESS_KEY_ID' in os.environ and 'AWS_SECRET_ACCESS_KEY' in os.environ:
+    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+
+# Common S3 settings regardless of auth method
+AWS_STORAGE_BUCKET_NAME = 'donshack-project-media-spring-2025'  # Updated bucket name
 AWS_S3_REGION_NAME = 'us-west-1' 
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None # remove the acl rule to allow all users to have access to the s3 bucket
@@ -67,14 +81,19 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-#CORS_ALLOW_ALL_ORIGINS = True # allowing all origins 
-
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS Settings
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-]
 
+# For production, specify only your frontend domain
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True
+else:
+    CORS_ALLOW_ALL_ORIGINS = False
+    CORS_ALLOWED_ORIGINS = [
+        "http://localhost:3000",
+        # Add your frontend domain below
+        "https://clixz.org"  # Replace with your actual frontend domain
+    ]
 
 ROOT_URLCONF = 'dons_hack.urls'
 
@@ -96,17 +115,24 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'dons_hack.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Check if DATABASE_URL is provided (for production PostgreSQL)
+if os.getenv('DATABASE_URL'):
+    # Production database (PostgreSQL)
+    import dj_database_url
+    DATABASES = {
+        'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
     }
-}
-
+else:
+    # Development database (SQLite)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -126,7 +152,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+# Security settings for production
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = 'DENY'
+    
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
@@ -138,11 +172,11 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
