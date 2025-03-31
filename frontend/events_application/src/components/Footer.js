@@ -8,7 +8,7 @@ export default function Footer() {
                 <Row>
                     <Col>
                         <div className='credits pt-3'>
-                            <p>&copy; 2024 Clixz <img
+                            <p>&copy; 2025 Clixz <img
                                 src={Logo}
                                 alt="logo"
                                 style={{ height: '30px', p: '2%', justifyContent: 'center', alignItems: 'center' }}
