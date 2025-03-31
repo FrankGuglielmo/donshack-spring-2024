@@ -15,7 +15,7 @@ const config = {
   // API base URL
   apiUrl: process.env.REACT_APP_API_URL || 
     (process.env.NODE_ENV === 'production' 
-     ? 'http://ec2-54-176-215-71.us-west-1.compute.amazonaws.com' 
+     ? 'https://api.clixz.org' 
      : 'http://localhost:8000'),
   
   // S3 bucket configuration
