@@ -13,10 +13,7 @@ const config = {
   ],
   
   // API base URL
-  apiUrl: process.env.REACT_APP_API_URL || 
-    (process.env.NODE_ENV === 'production' 
-     ? 'https://api.clixz.org' 
-     : 'http://localhost:8000'),
+  apiUrl: process.env.REACT_APP_API_URL || 'http://localhost:8000',
   
   // S3 bucket configuration
   s3: {

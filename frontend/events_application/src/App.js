@@ -12,7 +12,7 @@ function App() {
   return (
     // handles routing for entire frontend UI, including homepage
     <div className="App">
-      <Router basename="/">
+      <Router>
         <Analytics />
         <Routes>
           <Route path="/" element={<Homepage />} />
