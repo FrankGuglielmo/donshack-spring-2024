@@ -9,7 +9,7 @@
 const config = {
   // List of email addresses allowed to create events
   allowedEventCreators: [
-    'frankieg160@gmail.com',
+    'frankieg1610@gmail.com',
   ],
   
   // API base URL
