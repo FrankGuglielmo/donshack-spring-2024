@@ -88,7 +88,7 @@ function ProfilePage() {
   const fetchEvents = async () => {
     try {
       const response = await axios.get(
-        "https://contract-manager.aquaflare.io/events/"
+        "https://api.clixz.org/events/"
       );
       const allEvents = response.data;
 
