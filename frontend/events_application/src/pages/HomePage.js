@@ -26,7 +26,13 @@ function HomePage() {
         // Import the config to use environment-specific API URL
         import("../config").then(async (config) => {
           // using async & await in order to propery "wait" for data
-          const response = await fetch(`${config.default.apiUrl}/events/`);
+          const response = await fetch(`${config.default.apiUrl}/events/`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            credentials: 'include'
+          });
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }

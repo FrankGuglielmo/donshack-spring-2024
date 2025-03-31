@@ -34,7 +34,14 @@ function EventPage() {
         try {
           // fetching from API using config
           const response = await fetch(
-            `${config.apiUrl}/events/${eventId}/media-uploads`
+            `${config.apiUrl}/events/${eventId}/media-uploads`,
+            {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              credentials: 'include'
+            }
           );
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -54,7 +61,14 @@ function EventPage() {
         try {
           // fetching specific event using config
           const response = await fetch(
-            `${config.apiUrl}/events/${eventId}`
+            `${config.apiUrl}/events/${eventId}`,
+            {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              credentials: 'include'
+            }
           );
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
