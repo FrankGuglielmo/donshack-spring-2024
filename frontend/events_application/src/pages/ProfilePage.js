@@ -88,7 +88,15 @@ function ProfilePage() {
   const fetchEvents = async () => {
     try {
       const response = await axios.get(
-        "https://api.clixz.org/events/"
+        "https://api.clixz.org/events/", 
+        {
+          withCredentials: true, // Enables sending cookies cross-origin
+          headers: {
+            'Content-Type': 'application/json',
+            // Optional: Add any additional headers if needed
+            // 'Authorization': `Bearer ${yourAuthToken}` 
+          }
+        }
       );
       const allEvents = response.data;
 

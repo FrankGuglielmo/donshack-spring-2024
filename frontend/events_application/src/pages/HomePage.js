@@ -28,10 +28,10 @@ function HomePage() {
           // using async & await in order to propery "wait" for data
           const response = await fetch(`${config.default.apiUrl}/events/`, {
             method: 'GET',
+            credentials: 'include',
             headers: {
               'Content-Type': 'application/json',
-            },
-            credentials: 'include'
+            }
           });
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
