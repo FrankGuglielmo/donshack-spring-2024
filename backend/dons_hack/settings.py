@@ -36,8 +36,7 @@ ALLOWED_HOSTS = [
     "contract-manager.aquaflare.io", 
     "chupacabra.cs.usfca.edu", 
     "localhost:3000",
-    # Add your EC2 instance domain/IP below
-    "ec2-instance-domain.amazonaws.com"  # Replace with your actual EC2 domain
+    "http://ec2-54-176-215-71.us-west-1.compute.amazonaws.com/" 
 ]
 
 # Application definition
@@ -92,7 +91,7 @@ else:
     CORS_ALLOWED_ORIGINS = [
         "http://localhost:3000",
         # Add your frontend domain below
-        "https://clixz.org"  # Replace with your actual frontend domain
+        "https://clixz.org"
     ]
 
 ROOT_URLCONF = 'dons_hack.urls'
