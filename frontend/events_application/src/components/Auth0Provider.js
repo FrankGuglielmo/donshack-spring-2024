@@ -1,12 +1,13 @@
 import { Auth0Provider } from "@auth0/auth0-react";
+import config from "../config";
 
 const Auth0ProviderWithHistory = ({ children }) => {
   return (
     <Auth0Provider
-      domain="donshack24.us.auth0.com"
-      clientId="liC47L5l4ADMUs78jb7pqfZJ4R3KYOJe"
+      domain={config.auth0.domain}
+      clientId={config.auth0.clientId}
       authorizationParams={{
-        redirect_uri: window.location.origin + "/#/profile",
+        redirect_uri: config.auth0.redirectUri,
       }}
     >
       {children}

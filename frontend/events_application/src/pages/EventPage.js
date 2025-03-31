@@ -25,45 +25,52 @@ function EventPage() {
   const [hover, setHover] = useState(false);
 
   useEffect(() => {
-    // function that fetches for all photos for specified event ID and updates state
-    const fetchEventMedia = async () => {
-      try {
-        // fetching from API root
-        const response = await fetch(
-          `https://contract-manager.aquaflare.io/events/${eventId}/media-uploads`
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+    // Import config module
+    import("../config").then((configModule) => {
+      const config = configModule.default;
+      
+      // function that fetches for all photos for specified event ID and updates state
+      const fetchEventMedia = async () => {
+        try {
+          // fetching from API using config
+          const response = await fetch(
+            `${config.apiUrl}/events/${eventId}/media-uploads`
+          );
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
 
-        const data = await response.json();
-        // map through data retrieved and update state 
-        const mediaUrls = data.map((media) => media.s3_url);
-        setEventMedia(mediaUrls);
-      } catch (error) {
-        console.error("Failed to fetch event media", error);
-      }
-    };
-
-    // function to fetch all specific event metadata
-    const fetchEventData = async () => {
-      try {
-        // fetching specific event
-        const response = await fetch(
-          `https://contract-manager.aquaflare.io/events/${eventId}`
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          const data = await response.json();
+          // map through data retrieved and update state 
+          const mediaUrls = data.map((media) => media.s3_url);
+          setEventMedia(mediaUrls);
+        } catch (error) {
+          console.error("Failed to fetch event media", error);
         }
-        const eventData = await response.json();
-      } catch (error) {
-        console.error("Failed to fetch event data", error);
+      };
+
+      // function to fetch all specific event metadata
+      const fetchEventData = async () => {
+        try {
+          // fetching specific event using config
+          const response = await fetch(
+            `${config.apiUrl}/events/${eventId}`
+          );
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const eventData = await response.json();
+        } catch (error) {
+          console.error("Failed to fetch event data", error);
+        }
+      };
+      
+      // Execute fetch functions
+      fetchEventMedia();
+      if (!event) {
+        fetchEventData();
       }
-    };
-    fetchEventMedia();
-    if (!event) {
-      fetchEventData();
-    }
+    });
   }, [eventId, event]);
 
   // function to bring user to photo route for PhotoView.js file
@@ -101,9 +108,12 @@ function EventPage() {
       console.log(formData);
 
       // posting data to db url
+      // Import config for API URL
+      const config = (await import("../config")).default;
+      
       await axios
         .post(
-          `https://contract-manager.aquaflare.io/media_uploads/`,
+          `${config.apiUrl}/media_uploads/`,
           formData,
           {
             headers: {

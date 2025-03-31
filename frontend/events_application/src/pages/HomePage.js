@@ -23,17 +23,17 @@ function HomePage() {
     // i.e event title, date, photos, etc.
     const fetchEvents = async () => {
       try {
-        // using async & await in order to propery "wait" for data
-        // data is in API root
-        const response = await fetch(
-          "https://contract-manager.aquaflare.io/events/"
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        // set events state with retrieved data
-        setEvents(data);
+        // Import the config to use environment-specific API URL
+        import("../config").then(async (config) => {
+          // using async & await in order to propery "wait" for data
+          const response = await fetch(`${config.default.apiUrl}/events/`);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const data = await response.json();
+          // set events state with retrieved data
+          setEvents(data);
+        });
       } catch (error) {
         console.error("Fetching events failed: ", error);
       }

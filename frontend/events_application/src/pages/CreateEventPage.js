@@ -54,25 +54,30 @@ function CreateEventForm() {
           setUserName(email);
           const sub = idTokenClaims?.sub || "";
 
-          // Make a GET request to fetch all users
-          axios
-            .get("https://contract-manager.aquaflare.io/users/", {
-              withCredentials: true,
-            })
-            .then((response) => {
-              const allUsers = response.data;
-              setUsers(allUsers);
+          // Import config for API URL
+          import("../config").then((configModule) => {
+            const config = configModule.default;
+            
+            // Make a GET request to fetch all users
+            axios
+              .get(`${config.apiUrl}/users/`, {
+                withCredentials: true,
+              })
+              .then((response) => {
+                const allUsers = response.data;
+                setUsers(allUsers);
 
-              // Filter the users to find the user with the desired username
-              const userWithUsername = allUsers.find(
-                (user) => user.name === email
-              );
+                // Filter the users to find the user with the desired username
+                const userWithUsername = allUsers.find(
+                  (user) => user.name === email
+                );
 
-              setCurUserID(userWithUsername.id);
-            })
-            .catch((error) => {
-              console.error("Error fetching users:", error);
-            });
+                setCurUserID(userWithUsername.id);
+              })
+              .catch((error) => {
+                console.error("Error fetching users:", error);
+              });
+          });
         } catch (error) {
           console.error("Error retrieving ID token claims:", error);
         }
@@ -93,8 +98,11 @@ function CreateEventForm() {
       newEvent.append("hosted_by", curUserID);
 
       // Send POST request with FormData
+      // Import config for API URL
+      const config = (await import("../config")).default;
+      
       await axios
-        .post("https://contract-manager.aquaflare.io/events/", newEvent, {
+        .post(`${config.apiUrl}/events/`, newEvent, {
           headers: {
             "Content-Type": "multipart/form-data",
           },

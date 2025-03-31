@@ -16,6 +16,22 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+def get_s3_client():
+    """
+    Get boto3 S3 client using instance IAM role if available, otherwise use settings.
+    In EC2 with IAM role, boto3 will automatically use the instance credentials.
+    """
+    kwargs = {'region_name': settings.AWS_S3_REGION_NAME}
+    
+    # Add credentials only if explicitly provided (not on EC2 with IAM role)
+    if hasattr(settings, 'AWS_ACCESS_KEY_ID') and settings.AWS_ACCESS_KEY_ID:
+        kwargs.update({
+            'aws_access_key_id': settings.AWS_ACCESS_KEY_ID,
+            'aws_secret_access_key': settings.AWS_SECRET_ACCESS_KEY,
+        })
+    
+    return boto3.client('s3', **kwargs)
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -50,9 +66,7 @@ class EventViewSet(viewsets.ModelViewSet):
         event = self.get_object()
         
         # delete all the media before we delete the event from the database
-        s3_client = boto3.client('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-                                 aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-                                 region_name=settings.AWS_S3_REGION_NAME)
+        s3_client = get_s3_client()
         bucket_name = settings.AWS_STORAGE_BUCKET_NAME
 
         media_uploads = event.media_uploads.all()
@@ -100,9 +114,7 @@ class MediaUploadViewSet(viewsets.ModelViewSet):
 
         file_content = BytesIO(file.read())
         # use the boto client to actually access the s3 and upload the file to the bucket
-        s3_client = boto3.client('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-                                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-                                region_name=settings.AWS_S3_REGION_NAME)
+        s3_client = get_s3_client()
 
         try:
             s3_key = f"events/{event_id}/{file.name}"  # path within the bucket where we want to store the media
@@ -137,9 +149,7 @@ class MediaUploadViewSet(viewsets.ModelViewSet):
         event_id = media_upload.event.id  # Store event ID for the response
 
         # Initialize the S3 client
-        s3_client = boto3.client('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-                                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-                                region_name=settings.AWS_S3_REGION_NAME)
+        s3_client = get_s3_client()
         
         # Extract the bucket name and the S3 key from the media upload's file path
         bucket_name = settings.AWS_STORAGE_BUCKET_NAME
@@ -161,9 +171,7 @@ class MediaUploadViewSet(viewsets.ModelViewSet):
     # define the destroy method for the ViewSet to actually be able to delete 
     def destroy(self, request, *args, **kwargs):
         media_upload = self.get_object()
-        s3_client = boto3.client('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-                                 aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-                                 region_name=settings.AWS_S3_REGION_NAME)
+        s3_client = get_s3_client()
         
         # Extract bucket name and object key from the media upload's file path
         bucket_name = settings.AWS_STORAGE_BUCKET_NAME  # get the bucket name
