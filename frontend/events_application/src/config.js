@@ -7,6 +7,12 @@
  */
 
 const config = {
+  // List of email addresses allowed to create events
+  allowedEventCreators: [
+    'frankieg160@gmail.com',
+    // Add more allowed emails here
+  ],
+  
   // API base URL
   apiUrl: process.env.REACT_APP_API_URL || 
           (process.env.NODE_ENV === 'production' 

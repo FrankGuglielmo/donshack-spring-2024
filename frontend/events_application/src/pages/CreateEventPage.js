@@ -5,12 +5,28 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
+import Modal from "react-bootstrap/Modal";
 import NavbarMain from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import DOMPurify from "dompurify";
+
+// Component for unauthorized access modal
+const UnauthorizedModal = ({ show, onHide }) => (
+  <Modal show={show} onHide={onHide}>
+    <Modal.Header closeButton>
+      <Modal.Title>Unauthorized</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>
+      We've disabled creating new events at this time, please contact admins to have an event be created
+    </Modal.Body>
+    <Modal.Footer>
+      <Button variant="secondary" onClick={onHide}>Close</Button>
+    </Modal.Footer>
+  </Modal>
+);
 
 // function to display create event form
 function CreateEventForm() {
@@ -25,11 +41,13 @@ function CreateEventForm() {
   const [userName, setUserName] = useState("");
   const [users, setUsers] = useState([]);
   const [curUserID, setCurUserID] = useState(null);
+  const [showUnauthorizedModal, setShowUnauthorizedModal] = useState(false);
+  const [isAuthorized, setIsAuthorized] = useState(false);
 
-  // navigating to profile route change
+  // navigating to home page after event creation
   const navigate = useNavigate();
   const routeChange = () => {
-    navigate(`/profile`);
+    navigate(`/`);
   };
 
   const schema = yup.object().shape({
@@ -44,7 +62,20 @@ function CreateEventForm() {
         }),
     });
 
-    // fetching user profile 
+  // Check if user is authorized to create events
+  const checkAuthorization = (email) => {
+    import("../config").then((configModule) => {
+      const config = configModule.default;
+      setIsAuthorized(config.allowedEventCreators.includes(email));
+      
+      // Show unauthorized modal if user is not authorized
+      if (!config.allowedEventCreators.includes(email)) {
+        setShowUnauthorizedModal(true);
+      }
+    });
+  };
+
+  // fetching user profile 
   useEffect(() => {
     const fetchUserProfile = async () => {
       if (!isLoading) {
@@ -53,6 +84,9 @@ function CreateEventForm() {
           const email = idTokenClaims?.email || "";
           setUserName(email);
           const sub = idTokenClaims?.sub || "";
+          
+          // Check if user is authorized to create events
+          checkAuthorization(email);
 
           // Import config for API URL
           import("../config").then((configModule) => {
@@ -72,7 +106,9 @@ function CreateEventForm() {
                   (user) => user.name === email
                 );
 
-                setCurUserID(userWithUsername.id);
+                if (userWithUsername) {
+                  setCurUserID(userWithUsername.id);
+                }
               })
               .catch((error) => {
                 console.error("Error fetching users:", error);
@@ -88,6 +124,11 @@ function CreateEventForm() {
 
   // functionality that saves users created events
   const saveEvent = async (values) => {
+    if (!isAuthorized) {
+      setShowUnauthorizedModal(true);
+      return;
+    }
+    
     try {
       //Update DB
       const newEvent = new FormData();
@@ -109,6 +150,8 @@ function CreateEventForm() {
         })
         .then(() => {
           console.log("Saved successfully!");
+          // Redirect to home page after successful event creation
+          routeChange();
         })
         .catch((error) => {
           console.error("Error saving event info:", error);
@@ -117,9 +160,7 @@ function CreateEventForm() {
 
       //TODO: Editing events?
       //TODO: Deleting events?
-
-      //Reroute to profile page
-      routeChange();
+      
     } catch (error) {
       console.error("Error uploading file or saving event:", error);
     }
@@ -130,8 +171,22 @@ function CreateEventForm() {
       <header>
         <NavbarMain />
       </header>
+      
+      {/* Unauthorized Modal */}
+      <UnauthorizedModal 
+        show={showUnauthorizedModal} 
+        onHide={() => {
+          setShowUnauthorizedModal(false);
+          // Redirect to home page if user is not authorized
+          if (!isAuthorized) {
+            routeChange();
+          }
+        }} 
+      />
+      
       <h2 id="form-header"> Create an Event:</h2>
-      <Formik
+      {isAuthorized ? (
+        <Formik
         validationSchema={schema}
         onSubmit={console.log}
         initialValues={{
@@ -285,6 +340,11 @@ function CreateEventForm() {
           </Form>
         )}
       </Formik>
+      ) : (
+        <div className="unauthorized-message p-4 text-center">
+          <p>Loading authorization status or checking if you can create events...</p>
+        </div>
+      )}
       <footer>
         <Footer />
       </footer>
