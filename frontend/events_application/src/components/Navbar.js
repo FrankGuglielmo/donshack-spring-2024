@@ -26,7 +26,7 @@ export default function NavbarMain() {
   }, [getIdTokenClaims, isAuthenticated, isLoading]);
   return (
     <>
-      <Navbar style={{ backgroundColor: '#C4D6E6' }}>
+      <Navbar className='header'>
         <Container>
           <Navbar.Brand href="/">
             <img

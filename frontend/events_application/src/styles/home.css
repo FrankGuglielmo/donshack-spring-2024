@@ -1,15 +1,28 @@
-body,
-html {
-    height: 100%;
-    margin: 0;
-}
+* {
+    box-sizing: border-box;
+  }
+  
+  html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+  }
 
 main {
-    background-color: #FBF8E3;
+    background-color: #F5F5F5;
     min-height: calc(100vh - 10vh);
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
+
+.header {
+    background-color: #b2d3d2;
+    color: #FFFFFF;
+    padding: 1% 2%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .photo-grid-display {
@@ -85,9 +98,6 @@ main {
 
 
 #events {
-    background-color: #f9f8f1;
-    border: solid #e7c942 1px;
-    border-radius: 20px;
     padding: 2%;
     width: 80%;
     justify-content: center;
@@ -361,7 +371,7 @@ button h3 {
 
 #form-header {
     padding-top: 1%;
-    font-size: 30px;
+    font-size: clamp(0.85rem, 1.5vw, 1rem);
     text-align: start;
     margin-left: 10%;
 }
@@ -410,3 +420,16 @@ button h3 {
     margin-right: 0; /* Align to the right */
 }
 
+@media (max-width: 600px) {
+  
+    h1 {
+      text-align: center;
+      font-size: 1rem;
+    }
+  
+    .create-event-btn {
+      width: 50%;
+      font-size: 1px;
+    }
+  }
+  

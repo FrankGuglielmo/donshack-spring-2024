@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import NavbarMain from "../components/Navbar";
 import Footer from "../components/Footer";
 import Button from "react-bootstrap/Button";
 import EventCard from "../components/EventCard";
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import useFetchEvents from "../hooks/FetchEvents";
 import "../styles/home.css";
 
 function HomePage() {
@@ -18,53 +19,24 @@ function HomePage() {
   // hover state css for buttons
   const [hover, setHover] = useState(false);
 
-  useEffect(() => {
-    // async function to fetch events from backend db
-    // i.e event title, date, photos, etc.
-    const fetchEvents = async () => {
-      try {
-        // Import the config to use environment-specific API URL
-        import("../config").then(async (config) => {
-          // using async & await in order to propery "wait" for data
-          const response = await fetch(`${config.default.apiUrl}/events/`, {
-            method: 'GET',
-            credentials: 'include',
-            headers: {
-              'Content-Type': 'application/json',
-            }
-          });
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          const data = await response.json();
-          // set events state with retrieved data
-          setEvents(data);
-        });
-      } catch (error) {
-        console.error("Fetching events failed: ", error);
-      }
-    };
+  useFetchEvents(setEvents);
 
-    // function call
-    fetchEvents();
-  }, []);
-
-  // route change functionality for create event button
+  // route change to create an event
   const routeChange = () => {
     navigate(`/createEvent`);
   };
 
   // style function for buttons
   const style = {
-    backgroundColor: hover ? '#C75222' : '#EF8356',
-    border: '1px solid #FF6B2D',
+    backgroundColor: hover ? '#196866' : '#267c7a',
+    border: 'none',
     cursor: 'pointer',
+    transition: 'background-color 0.3s ease-in-out',
   };
 
   return (
     <main>
       <header>
-        {/* navbar component call */}
         <NavbarMain />
       </header>
       <section id="home-blurb">
@@ -75,10 +47,10 @@ function HomePage() {
       </section>
       <section id="events">
         <section>
+          <hr></hr>
           <div className="buttons">
             {/* list of all total events in db */}
             <h2> Events: </h2>
-            {/* create new event button */}
             <Button
               className="create-event-btn"
               style={style}
@@ -100,7 +72,6 @@ function HomePage() {
         </section>
       </section>
       <footer>
-        {/* footer component call */}
         <Footer />
       </footer>
     </main>
